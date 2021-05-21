@@ -1,0 +1,14 @@
+# IDE
+.idea/
+
+# virtual environment
+#.venv/
+#venv/
+
+# private folder
+src/instance/
+
+# caching files
+src/__pycache__/
+src/**/__pycache__/
+

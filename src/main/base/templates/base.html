@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!--  jQuery  -->
+    <script src="../static/libraries/jquery/jquery-3.6.0.min.js"></script>
+
+    <!--  base  -->
+    <link rel="stylesheet" href="../static/base.css">
+    <script src="../static/base.js"></script>
+
+
+    <!--  showing the APP_NAME environment variable  -->
+    <title>{{ config.APP_NAME }}</title>
+</head>
+<body>
+    <div id="root">
+        <header id="header" class="container">
+        </header>
+
+
+        <main id="main" class="container">
+            {% block content %} {% endblock %}
+        </main>
+
+
+        <footer id="footer" class="container">
+            Copyright &copy; 2021 - Nguyen Anh Tuan - Web Portfolio
+        </footer>
+    </div>
+</body>
+</html>
