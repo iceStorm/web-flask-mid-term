@@ -1,18 +1,9 @@
-from flask import Blueprint, jsonify, request
-from flask_cors import cross_origin
+from flask import Blueprint, jsonify, request, render_template
 from werkzeug.security import generate_password_hash
 
 
-# self-created packages
-# circular import error...
-# from src.main.models.api_response import ApiResponse, ApiError
-# from src.main.models.error_handlers import ErrorResponse
-# from src.main.modules.auth.auth_service import AuthService
-# from src.main.modules.user.user_model import User
-
-
 # defining controller
-auth = Blueprint('auth', __name__)
+auth = Blueprint('auth', __name__, template_folder='templates', static_folder='auth/static')
 
 
 @auth.route('/login', methods=['POST'])
@@ -25,32 +16,33 @@ def logout():
     return "logged out", 200
 
 
-@auth.route('/signup', methods=['POST'])
-@cross_origin()
+@auth.route('/signup', methods=['GET', 'POST'])
 def signup():
-    from src.main.models.api_response import ApiResponse, ApiError
-    from src.main.models.error_handlers import ErrorResponse
+    # grabbing the form
+    from src.main.modules.auth.forms.signup_form import SignUpForm
+    form = SignUpForm()
+
+    # checking if is GET request
+    if request.method == 'GET':
+        return render_template('signup.html', form=form)
+
+    # checking if the form is not valid yet
+    if not form.validate_on_submit():
+        return render_template('signup.html', form=form)
+
+    # all validation passed, let's continue handle the process
     from src.main.modules.auth.auth_service import AuthService
     from src.main.modules.user.user_model import User
 
-    json_body = request.get_json()
-    email = json_body['email']
-    fullName = json_body['fullName']
-    password_hash = json_body['password']
-
-    if AuthService.is_user_already_exists(email):
-        return ErrorResponse\
-            .CustomError(
-                status_code=500,
-                error=ApiError(
-                    title='Already exists.',
-                    message='There is an account registered with the email. Please try another email.')
-            ).value
+    # grabbing form fields data
+    email = form.email.data
+    fullName = form.full_name.data
+    password_hash = form.password.data
 
     new_user = User(email=email, full_name=fullName, password_hash=generate_password_hash(password_hash, method='sha256'))
     AuthService.register(new_user)
 
-    return ApiResponse(status_code=200, data='Registered successfully.').value
+    return render_template("signup-success.html", email=email)
 
 
 @auth.route('/reset-password', methods=['POST'])

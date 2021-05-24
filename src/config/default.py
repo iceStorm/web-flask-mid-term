@@ -3,11 +3,11 @@
 #
 
 
-APP_NAME = "RS-Tree"
+APP_NAME = "Todo-List App"
 
 SECRET_KEY = "iceStorm"
 
-# Configuration for the Flask-Bcrypt extension
 BCRYPT_LOG_ROUNDS = 12
+
 SQLALCHEMY_DATABASE_URI = 'sqlite:///../db/db.sqlite'
 SQLALCHEMY_TRACK_MODIFICATIONS = True

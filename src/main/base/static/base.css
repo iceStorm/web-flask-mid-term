@@ -2,6 +2,10 @@
     src: url('./fonts/Roboto/Roboto-Regular.ttf');
     font-family: 'Roboto';
 }
+@font-face {
+  src: url('./fonts/australia-font/Australia-X3qGo.otf');
+  font-family: Australia;
+}
 
 
 html, body {
@@ -25,13 +29,17 @@ body {
     display: flex;
     flex-direction: column;
 }
+@media (max-height: 400px) {
+    #root {
+        min-height: unset;
+    }
+}
+
 
 .container {
     width: 950px;
     margin: 0 auto;
-    padding: 15px;
 
-    background: #fff;
     border: 1px solid #eee;
 }
 @media (max-width: 950px) {
@@ -45,14 +53,29 @@ body {
     border-top: none;
     border-bottom: none;
 
-    flex: auto;
+    padding: 50px;
 }
 
 #header {
     min-height: 90px;
+    padding: 0;
+}
+#header #header-bg {
+
+}
+#header #header-bg a {
+    font-family: Australia;
+
+    /*background: linear-gradient(to bottom right, #185ABD, #55BEF4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; */
+}
+#header #nav {
+
 }
 
 #footer {
-    text-align: center;
+
 }
+
 

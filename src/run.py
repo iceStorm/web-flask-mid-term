@@ -54,6 +54,14 @@ if __name__ == "__main__":
     db.init_app(app=app)
 
 
+    # initializing the TailwindCSS
+    from flask_assets import Environment, Bundle
+    assets = Environment()
+    assets.init_app(app)
+    css = Bundle('src/css/*.css', filters='postcss', output='dist/css/main.css')
+    assets.register('css', css)
+
+
     # ensuring the tables is exist or create new ones
     with app.app_context():
         print("\n[ENSURING THE DATABASE...]")

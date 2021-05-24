@@ -5,5 +5,5 @@ ROOT_DIR=.
 MAIN_DIR=./src/main/
 export PYTHONPATH=$MAIN_DIR:$ROOT_DIR
 
-#export # showing all environment variables
+export # showing all environment variables
 python src/run.py

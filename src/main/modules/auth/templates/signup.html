@@ -1,7 +1,64 @@
 {% extends "base.html" %}
 
 {% block content %}
+    {{ center_main() }}
 
-    <h1>Sign Up !</h1>
+    <form action="" id="signup-form" method="post" onsubmit="return submitForm(e);"
+          class="py-5 px-9 rounded-md"
+          style="min-width: 350px; box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;">
+        {{ form.csrf_token }}
+
+        {% for field in form if field.name != 'csrf_token' %}
+            <div class="form-field py-2">
+                <div class="form-field-label text-gray-700">{{ field.label(class="text-sm font-medium") }}</div>
+                <div class="form-field-field">{{ field(
+                    class_="
+                    transition
+                    duration-300
+                    w-full
+                    border-2
+                    border-gray-150
+                    rounded py-1 px-2
+                    hover:bg-gray-100
+                    focus:outline-none
+                    focus:border-2
+                    focus:border-blue-400
+                    focus:bg-white
+                    ") }}</div>
+
+                <div class="form-field-errors-container">
+                    {% if field.errors %}
+                        <script>
+                            // adding the error style classes to the input's class attribute
+                            document.getElementById('{{ field.id }}').classList.add('bg-red-100', 'border-red-500');
+                        </script>
+                        {% for error in field.errors %}
+                            <p class="form-field-error text-xs text-red-500">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+
+        <input type="submit" value="Submit"
+               class="
+               block
+               mx-auto
+               cursor-pointer
+               mt-9
+               px-9
+               py-2
+               rounded-full
+               bg-blue-400
+               text-white
+               font-medium
+               transition-all
+               duration-300
+               focus:outline-none
+               focus:ring-2
+               focus:ring-offset-2
+               focus:ring-blue-400
+               hover:bg-blue-700">
+    </form>
 
 {% endblock %}

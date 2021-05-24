@@ -15,6 +15,7 @@ class App(Flask):
 
         self.load_environment_variables()
         self.register_blueprints()
+        self.register_error_handlers()
 
     def load_environment_variables(self):
         """
@@ -35,5 +36,20 @@ class App(Flask):
         Registering the app's blueprints.
         """
         from modules.index.index_controller import indx
+        from modules.auth.auth_controller import auth
 
-        self.register_blueprint(indx)
+        self.register_blueprint(indx, url_prefix="")
+        self.register_blueprint(auth, url_prefix="")
+
+    def error_handlers(self, status_code: int):
+        pass
+
+    def register_error_handlers(self):
+        """
+        Registering custom error handlers that show custom view (html page) for the app.
+        """
+        from src.main.error_handlers import ErrorHandler
+
+        self.register_error_handler(403, ErrorHandler.forbidden)
+        self.register_error_handler(404, ErrorHandler.not_found)
+        self.register_error_handler(500, ErrorHandler.server_error)
