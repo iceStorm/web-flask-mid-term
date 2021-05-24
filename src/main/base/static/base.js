@@ -50,13 +50,23 @@ function replaceContent(html, path) {
 
     // re-set for new-in a tags
     setATagNavigate();
+    setSubmit();
 }
 
-function submitForm(e) {
-    e.preventDefault();
-    e.stopPropagation();
 
-    console.log(e);
+setSubmit()
+function setSubmit() {
+    $('form').each(function(index, elem) {
+        $(this).submit((e) => {
+            e.preventDefault();
 
-    return false;
+            axios.post(e.target.action, new FormData(e.target))
+                .then(res => {
+                    replaceContent(res.data, res.request.responseURL);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        });
+    });
 }

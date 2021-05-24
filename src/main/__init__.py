@@ -38,8 +38,8 @@ class App(Flask):
         from modules.index.index_controller import indx
         from modules.auth.auth_controller import auth
 
-        self.register_blueprint(indx, url_prefix="")
-        self.register_blueprint(auth, url_prefix="")
+        self.register_blueprint(indx, url_prefix="/")
+        self.register_blueprint(auth, url_prefix="/")
 
     def error_handlers(self, status_code: int):
         pass

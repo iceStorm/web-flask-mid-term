@@ -3,7 +3,9 @@ from werkzeug.security import generate_password_hash
 
 
 # defining controller
-auth = Blueprint('auth', __name__, template_folder='templates', static_folder='auth/static')
+from werkzeug.utils import redirect
+
+auth = Blueprint('auth', __name__, template_folder='templates', static_folder='static', static_url_path='auth/static')
 
 
 @auth.route('/login', methods=['POST'])
@@ -11,7 +13,7 @@ def login():
     return "login page", 200
 
 
-@auth.route('/logout', methods=['POST'])
+@auth.route('/logout', methods=['GET', 'POST'])
 def logout():
     return "logged out", 200
 
@@ -42,7 +44,8 @@ def signup():
     new_user = User(email=email, full_name=fullName, password_hash=generate_password_hash(password_hash, method='sha256'))
     AuthService.register(new_user)
 
-    return render_template("signup-success.html", email=email)
+    return redirect(location='/')
+    # return render_template("signup-success.html", email=email)
 
 
 @auth.route('/reset-password', methods=['POST'])

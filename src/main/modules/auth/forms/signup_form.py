@@ -55,6 +55,6 @@ class SignUpForm(FlaskForm):
         validators=[
             InputRequired(message='Please fill out this field'),
             check_password_format,
-            EqualTo(fieldname='password', message='Password does not match'),
+            EqualTo(fieldname='password', message='Password fields does not match'),
         ]
     )
