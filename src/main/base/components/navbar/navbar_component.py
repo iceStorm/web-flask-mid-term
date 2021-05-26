@@ -5,9 +5,9 @@ from flask_login import current_user
 
 def get_view_model() -> NavBarViewModel:
     """
-    Resetting the nav items active state
+    Resetting the nav items active state, load the current_user
     """
-    print('current_user inside NavBar component:', current_user)
+    # print('current_user inside NavBar component:', current_user)
 
     return NavBarViewModel(
         user=current_user,

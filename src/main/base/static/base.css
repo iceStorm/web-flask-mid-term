@@ -2,10 +2,10 @@
     src: url('./fonts/Roboto/Roboto-Regular.ttf');
     font-family: 'Roboto';
 }
-/*@font-face {
-  src: url('./fonts/San Francisco/SanFranciscoDisplay-Regular.otf');
-  font-family: SF;
-}*/
+@font-face {
+  src: url('./fonts/Inter/Inter-Var.ttf');
+  font-family: Inter;
+}
 @font-face {
   src: url('./fonts/australia-font/Australia-X3qGo.otf');
   font-family: Australia;
@@ -18,6 +18,7 @@ html, body {
     padding: 0;
 
     /*font-family: SF;*/
+    /*font-family: Inter;*/
 }
 
 body {
@@ -68,7 +69,8 @@ body {
 
 }
 #header #header-bg a {
-    font-family: Australia;
+    font-family: system-ui;
+    font-weight: 900;
 
     /*background: linear-gradient(to bottom right, #185ABD, #55BEF4);
     -webkit-background-clip: text;

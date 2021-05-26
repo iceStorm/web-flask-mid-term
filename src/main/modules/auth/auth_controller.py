@@ -68,6 +68,7 @@ def signup():
     fullName = form.full_name.data
     password = form.password.data
 
+    # creating a new user based-on the Form's data
     new_user = User(email=email, full_name=fullName, password_hash=generate_password_hash(password, method='sha256'))
     AuthService.register(new_user)
 

@@ -49,10 +49,13 @@ class LoginForm(FlaskForm):
         label='Remember',
     )
 
+    # overriding the validate function
     def validate(self):
+        # first, validate the above requirements by passing this instance to the FlaskForm.validate()
         if not FlaskForm.validate(self):
             return False
 
+        # checking if the provided password is not True (with the one in database
         user = User.query.get(self.email.data)
         if AuthService.check_password(user, self.password.data):
             self.password.errors.append('The password you just provided was wrong')

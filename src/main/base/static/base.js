@@ -81,6 +81,8 @@ function showToast(text, type, duration=4000) {
 
 // initializing the progressbar
 loadProgressBar({
+    speed: 450,
+    trickleRate: 0.02,
     trickleSpeed: 1750,
 });
 

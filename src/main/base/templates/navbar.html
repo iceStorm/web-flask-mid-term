@@ -36,6 +36,49 @@
             Create account
         </a>
     {% else %}
-        {{ current_user }}
+        <div id="nav-user-area" class="relative">
+            <div class="nav-user-area-avatar">
+                <button class="
+                         rounded-full
+                         ring-2
+                         ring-offset-2
+                         ring-blue-500
+                         focus:outline-none">
+                    <img src="https://tinyurl.com/yg53kq2k"
+                         class="h-8 w-8 rounded-full">
+                </button>
+            </div>
+
+            <div class="
+                    hidden
+                    flex flex-col justify-start align-start
+                    nav-user-area-dropdown
+                    absolute z-50 right-0
+                    overflow-hidden
+                    py-1
+                    border border-gray-200
+                    rounded bg-white shadow-sm"
+                style="">
+
+                <a href="{{ url_for('auth.login') }}"
+                   class="py-2 px-4 min-w-max pr-14
+                   text-gray-500 text-sm
+                   transition duration-300 hover:bg-gray-100" style="">
+                    Profile
+                </a>
+                <a href="{{ url_for('auth.logout') }}"
+                   class="py-2 px-4 min-w-max pr-14
+                   text-gray-500 text-sm
+                   transition duration-300 hover:bg-gray-100" style="">
+                    Sign out
+                </a>
+            </div>
+        </div>
+
+        <style>
+            #nav-user-area:hover > div:last-child {
+                display: flex;
+            }
+        </style>
     {% endif %}
 </div>
