@@ -14,8 +14,16 @@ class App(Flask):
         self.static_folder = './base/static'
 
         self.load_environment_variables()
+        self.register_base_components()
         self.register_blueprints()
         self.register_error_handlers()
+
+    def register_base_components(self):
+        """
+        Registering base app's components via context_processor to get called each time a new request incoming.
+        """
+        from .base.components.navbar.navbar_component import navbar_component
+        self.context_processor(navbar_component)
 
     def load_environment_variables(self):
         """
@@ -41,9 +49,6 @@ class App(Flask):
         self.register_blueprint(indx, url_prefix="/")
         self.register_blueprint(auth, url_prefix="/")
 
-    def error_handlers(self, status_code: int):
-        pass
-
     def register_error_handlers(self):
         """
         Registering custom error handlers that show custom view (html page) for the app.
@@ -53,3 +58,4 @@ class App(Flask):
         self.register_error_handler(403, ErrorHandler.forbidden)
         self.register_error_handler(404, ErrorHandler.not_found)
         self.register_error_handler(500, ErrorHandler.server_error)
+

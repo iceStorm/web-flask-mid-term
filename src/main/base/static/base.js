@@ -41,12 +41,18 @@ function navigateTo(path) {
 
 // replacing the #main's innerHTML
 function replaceContent(html, path) {
-    const main = $('<div>').append($.parseHTML(html));
+    const ajaxContent = $('<div>').append($.parseHTML(html));
+    // console.log('The main content:', html.find('#main').html());
 
-    // console.log('The main content:', main.find('#main').html());
-    $('#main').html(main.find('#main').html());
 
+    //  replacing html
+    $('#main').html(ajaxContent.find('#main').html());
+    $('#nav').html(ajaxContent.find('#nav').html());
+
+
+    //  changing the url bar's content
     window.history.pushState('', '', `${path}`);
+
 
     // re-set for new-in a tags
     setATagNavigate();

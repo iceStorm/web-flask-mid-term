@@ -1,0 +1,6 @@
+
+{% for item in vm.nav_items %}
+    <span class="{% if item.is_active %}active{% endif %}">
+        {{ item.title }}
+    </span>
+{% endfor %}

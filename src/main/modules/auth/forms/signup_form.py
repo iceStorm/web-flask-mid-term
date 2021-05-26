@@ -6,10 +6,10 @@ import re
 
 
 def check_password_format(form, field):
-    if 6 < len(field.data) > 50:
-        raise ValidationError(message='The password length between 6 and 50 characters')
+    if len(field.data) < 6 or len(field.data) > 50:
+        raise ValidationError(message='The password must between 6 and 50 characters')
     else:
-        password_regex_pattern = '[a-zA-Z0-9]{6,50}'
+        password_regex_pattern = '[a-zA-Z0-9]'
         if not re.match(password_regex_pattern, field.data):
             raise ValidationError(message='The password can only contains numbers, letters')
 

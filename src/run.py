@@ -50,12 +50,13 @@ if __name__ == "__main__":
     from main import App
     app = App(instance_path=add_sys_paths()[0])
 
+
     print("\n[INITIALIZING THE DATABASE...]")
     db.init_app(app=app)
 
 
     from flask_cors import CORS
-    CORS(app=app, )
+    CORS(app=app)
 
 
     # ensuring the tables is exist or create new ones

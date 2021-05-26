@@ -1,10 +1,9 @@
-from flask import Blueprint, jsonify, request, render_template
-from werkzeug.security import generate_password_hash
+from flask import Blueprint, jsonify, request, render_template, flash
+from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import redirect
 
 
 # defining controller
-from werkzeug.utils import redirect
-
 auth = Blueprint('auth', __name__, template_folder='templates', static_folder='static', static_url_path='auth/static')
 
 
@@ -39,13 +38,14 @@ def signup():
     # grabbing form fields data
     email = form.email.data
     fullName = form.full_name.data
-    password_hash = form.password.data
+    password = form.password.data
 
-    new_user = User(email=email, full_name=fullName, password_hash=generate_password_hash(password_hash, method='sha256'))
+    new_user = User(email=email, full_name=fullName, password_hash=generate_password_hash(password, method='sha256'))
     AuthService.register(new_user)
 
+    # showing a flash message -> redirecting to the home page
+    flash(message='Successfully registered!', category='Success')
     return redirect(location='/')
-    # return render_template("signup-success.html", email=email)
 
 
 @auth.route('/reset-password', methods=['POST'])
