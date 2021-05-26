@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
 
     <!--  jQuery  -->
-    <script src="../static/libraries/jquery/jquery-3.6.0.min.js" defer></script>
+    <script src="../static/libraries/jquery/jquery-3.6.0.min.js"></script>
 
     <!--  Axios  -->
-    <script src="../static/libraries/axios/axios.js" defer></script>
+    <script src="../static/libraries/axios/axios.js"></script>
 
     <!--  NProgress  -->
     <link rel="stylesheet" href="../static/libraries/progressbar/nprogress.css">
-    <script src="../static/libraries/progressbar/index.js" defer></script>
+    <script src="../static/libraries/progressbar/index.js"></script>
 
 
     <!--  TailwindCSS  -->
@@ -25,10 +25,14 @@
     <!--  animate.css  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
-    <!--  base  -->
-    <link rel="stylesheet" href="../static/base.css">
-    <script src="../static/init.js" defer></script>
-    <script src="../static/base.js" defer></script>
+
+    <!--  iOS modal  -->
+    <link rel="stylesheet" href="../static/libraries/iOS-Modal/modal.css">
+    <script src="../static/libraries/iOS-Modal/modal.js"></script>
+
+    <!--  toaster  -->
+    <link rel="stylesheet" href="../static/libraries/toast/td-msessage.css">
+    <script src="../static/libraries/toast/td-message.js" defer></script>
 
 
     <!--  showing the APP_NAME environment variable  -->
@@ -42,29 +46,36 @@
                 <img src="../static/banner.png" class="inline-block" style="width: 55px">
                 <a href="/" class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-blue-400" style="font-size: 27px;">Todo List App</a>
             </div>
-            <nav id="nav" class="px-9 py-5" style="border-top: 1px solid #eee; background: #fcfcfc6b;">
-                {{ navbar_component()|e }}
+            <nav id="nav" class="px-9 flex justify-between items-stretch" style="border-top: 1px solid #eee; background: #fcfcfc6b;">
+                {{ navbar_component()|safe }}
             </nav>
         </header>
 
 
         <main id="main" class="container relative flex flex-col flex-auto bg-white p-9">
-            {% macro center_main() %}
+            {# this macro use to center-middle content in the #main section #}
+            {%- macro center_main() %}
                 <style>
                     #main {
                         justify-content: center;
                         align-items: center;
                     }
                 </style>
-            {% endmacro %}
+            {% endmacro -%}
 
-            {% with flash_msgs = get_flashed_messages() %}
+
+            {# rendering toasts messages #}
+            {% with flash_msgs = get_flashed_messages(with_categories=True) %}
                 {% if flash_msgs %}
-                    {% for msg in flash_msgs %}
-                        <h1>{{ msg }}</h1>
-                    {% endfor %}
+                    {%- for cat, msg in flash_msgs %}
+                        {# showToast(msg, cat)|safe #}
+                        <script>
+                            showToast('{{ msg }}', '{{ cat }}');
+                        </script>
+                    {% endfor -%}
                 {% endif %}
             {% endwith %}
+
 
             {% block content %} {% endblock %}
             {% block content_scripts %} {% endblock %}
@@ -75,6 +86,13 @@
             Copyright &copy; 2021 - Nguyễn Anh Tuấn - Web Portfolio
         </footer>
     </div>
+
+
+
+    <!--  base  -->
+    <link rel="stylesheet" href="../static/base.css">
+    <script src="../static/init.js" defer></script>
+    <script src="../static/base.js" defer></script>
 
 </body>
 </html>

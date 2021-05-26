@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template, Markup
 
 
 class App(Flask):
@@ -16,7 +16,9 @@ class App(Flask):
         self.load_environment_variables()
         self.register_base_components()
         self.register_blueprints()
+        # self.register_cors()
         self.register_error_handlers()
+        self.register_login_manager()
 
     def register_base_components(self):
         """
@@ -49,6 +51,16 @@ class App(Flask):
         self.register_blueprint(indx, url_prefix="/")
         self.register_blueprint(auth, url_prefix="/")
 
+    def register_cors(self, instance):
+        # adding CORS origins (all) for client ajax calling
+        from flask_cors import CORS
+        CORS(app=instance, resource={
+                r"/*": {
+                    "origins": "*",
+                },
+            }
+         )
+
     def register_error_handlers(self):
         """
         Registering custom error handlers that show custom view (html page) for the app.
@@ -59,3 +71,18 @@ class App(Flask):
         self.register_error_handler(404, ErrorHandler.not_found)
         self.register_error_handler(500, ErrorHandler.server_error)
 
+    def register_login_manager(self):
+        # adding login manager
+        from flask_login import LoginManager
+
+        login_manager = LoginManager()
+        login_manager.login_view = "auth.login"
+        login_manager.init_app(self)
+
+
+        # register user_loader
+        from src.main.modules.user.user_model import User
+
+        @login_manager.user_loader
+        def load_user(email):
+            return User.query.get(email)

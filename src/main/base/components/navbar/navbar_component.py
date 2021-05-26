@@ -1,25 +1,34 @@
 from flask import request, render_template
 from .navbar_viewmodel import NavBarViewModel, NavItem
-
-view_model = NavBarViewModel(
-    is_user_logged_in=False,
-    nav_items=[
-        NavItem(href='/', title='Home', is_active=False),
-        NavItem(href='/login', title='Login', is_active=False),
-        NavItem(href='/signup', title='Sign Up', is_active=False)
-    ],
-)
+from flask_login import current_user
 
 
-def component():
-    req_path = request.path
+def get_view_model() -> NavBarViewModel:
+    """
+    Resetting the nav items active state
+    """
+    print('current_user inside NavBar component:', current_user)
 
-    for item in view_model.nav_items:
-        if item.href == req_path:
-            item.is_active = True
-
-    return render_template("navbar.html", vm=view_model)
+    return NavBarViewModel(
+        user=current_user,
+        nav_items=[
+            NavItem(href='/', title='Home', is_active=False),
+            NavItem(href='/projects', title='Projects', is_active=False),
+        ],
+    )
 
 
 def navbar_component():
+    def component():
+        # getting a new view model instance
+        vm = get_view_model()
+
+        # getting current requesting path
+        req_path = request.path
+        print('req path:', req_path)
+
+        # setting the current active page
+        vm.set_active_nav_item(path=req_path)
+        return render_template("navbar.html", vm=vm)
+
     return dict(navbar_component=component)

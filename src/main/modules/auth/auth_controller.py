@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request, render_template, flash
+from flask_login import login_required, current_user, logout_user, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import redirect
 
@@ -7,14 +8,37 @@ from werkzeug.utils import redirect
 auth = Blueprint('auth', __name__, template_folder='templates', static_folder='static', static_url_path='auth/static')
 
 
-@auth.route('/login', methods=['POST'])
+@auth.route('/login', methods=['GET', 'POST'])
 def login():
-    return "login page", 200
+    # grabbing the form
+    from src.main.modules.auth.forms.login_form import LoginForm
+    form = LoginForm()
+
+    # checking if is GET request
+    if request.method == 'GET':
+        # redirecting logged-in user to the index page
+        if current_user.is_authenticated:
+            flash('You\'re already logged in!', category='warning')
+            return redirect('/')
+        return render_template('login.html', form=form)
+
+    # checking if the form is not valid yet
+    if not form.validate_on_submit():
+        return render_template('login.html', form=form)
+
+    from src.main.modules.user.user_model import User
+    user = User.query.get(form.email.data)
+
+    # let's log the user in
+    login_user(user, remember=form.remember)
+    return redirect(location='/')
 
 
 @auth.route('/logout', methods=['GET', 'POST'])
+@login_required
 def logout():
-    return "logged out", 200
+    logout_user()
+    return redirect(location="/")
 
 
 @auth.route('/signup', methods=['GET', 'POST'])
@@ -25,6 +49,10 @@ def signup():
 
     # checking if is GET request
     if request.method == 'GET':
+        # redirecting logged-in user to the index page
+        if current_user.is_authenticated:
+            flash('Please logout first, then signup!', category='warning')
+            return redirect('/')
         return render_template('signup.html', form=form)
 
     # checking if the form is not valid yet
@@ -44,7 +72,7 @@ def signup():
     AuthService.register(new_user)
 
     # showing a flash message -> redirecting to the home page
-    flash(message='Successfully registered!', category='Success')
+    flash(message='Successfully registered!', category='success')
     return redirect(location='/')
 
 

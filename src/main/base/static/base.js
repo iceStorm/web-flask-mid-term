@@ -2,6 +2,82 @@ const BACKEND_ENDPOINT = 'http://127.0.0.1:5000';
 
 // setting the baseURL for backend API calls
 axios.defaults.baseURL = BACKEND_ENDPOINT;
+axios.defaults.withCredentials = true
+
+//  intercepting response to handle errors from server
+axios.interceptors.response.use(
+res => {
+    return res;
+},
+err => {
+    console.log('axios error response:', err.response.status);
+    switch (err.response.status) {
+        case 401: {
+            $.message({
+                type: 'error',
+                text: 'Not authenticated. Please login first!',
+                position: 'bottom-center',
+            });
+
+            break;
+        }
+
+        case 403: {
+            $.message({
+                type: 'error',
+                text: 'Forbidden, please return!',
+                position: 'bottom-center',
+            });
+
+            break;
+        }
+
+        case 404: {
+            $.message({
+                type: 'error',
+                text: 'Resource not found!',
+                position: 'bottom-center',
+            });
+
+            break;
+        }
+
+        case 405: {
+            $.message({
+                type: 'error',
+                text: 'Request method not allowed! [GET, POST...]',
+                position: 'bottom-center',
+            });
+
+            break;
+        }
+
+        case 500: {
+            $.message({
+                type: 'error',
+                text: 'Server confusing to handle!',
+                position: 'bottom-center',
+            });
+
+            break;
+        }
+    }
+
+    return Promise.reject(err);
+});
+
+
+function showToast(text, type, duration=4000) {
+    // console.log('showing toast:', text);
+
+    $.message({
+        type: type,
+        text: text,
+        duration: duration,
+        position: 'bottom-center',
+    });
+}
+
 
 // initializing the progressbar
 loadProgressBar({
@@ -41,8 +117,10 @@ function navigateTo(path) {
 
 // replacing the #main's innerHTML
 function replaceContent(html, path) {
-    const ajaxContent = $('<div>').append($.parseHTML(html));
-    // console.log('The main content:', html.find('#main').html());
+    // expression: $.parseHTML(data, context = document, keepScripts = false)
+    const ajaxContent = $('<div>').append($.parseHTML(html, document, true));
+    // console.log('The whole content:', html);
+    // console.log('The main content:', ajaxContent.find('#main').html());
 
 
     //  replacing html

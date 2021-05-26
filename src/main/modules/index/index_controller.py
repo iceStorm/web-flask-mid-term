@@ -1,7 +1,7 @@
 import json
 import time
 
-from flask import Blueprint, render_template, g, current_app, request, jsonify
+from flask import Blueprint, render_template, g, current_app, request, jsonify, flash
 
 # defining controller
 # the static_url_path='home/static' means: this route has registered with url_prefix='/',
@@ -10,7 +10,8 @@ from flask import Blueprint, render_template, g, current_app, request, jsonify
 indx = Blueprint('index', __name__, template_folder='templates', static_folder='static', static_url_path='home/static')
 
 
-@indx.route("/", methods=["GET", "POST"])
+@indx.route("/", methods=["GET"])
 def index():
-    return render_template('index.html', value='Todo')
+    # flash(message='Welcome!', category='success')
+    return render_template('index.html')
 
