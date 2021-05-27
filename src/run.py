@@ -50,7 +50,7 @@ if __name__ == "__main__":
     from main import App
     app = App(instance_path=add_sys_paths()[0])
 
-    app.register_cors(app)
+    app.register_cors(app_instance=app)
 
     print("\n[INITIALIZING THE DATABASE...]")
     db.init_app(app=app)

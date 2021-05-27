@@ -12,10 +12,12 @@ class NavItem:
 
 class NavBarViewModel:
     user: any
+    full_name: str
     nav_items = []  # type: List[NavItem]
 
-    def __init__(self, user: any, nav_items: [NavItem]):
+    def __init__(self, user: any, full_name: str, nav_items: [NavItem]):
         self.user = user
+        self.full_name = full_name
         self.nav_items = nav_items
 
     def set_active_nav_item(self, path: str):

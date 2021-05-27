@@ -142,7 +142,7 @@ function replaceContent(html, path) {
 
 setSubmit()
 function setSubmit() {
-    $('form').each(function(index, elem) {
+    $('form.ajax').each(function(index, elem) {
         $(this).submit((e) => {
             e.preventDefault();
 
@@ -156,3 +156,4 @@ function setSubmit() {
         });
     });
 }
+

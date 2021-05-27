@@ -22,10 +22,19 @@ class App(Flask):
 
     def register_base_components(self):
         """
-        Registering base app's components via context_processor to get called each time a new request incoming.
+        Registering base app's components via context_processor to get called each time a new request coming.
         """
         from .base.components.navbar.navbar_component import navbar_component
         self.context_processor(navbar_component)
+
+        def extract_avatar_url(full_avatar_url: str):
+            try:
+                the_url = '/'.join(full_avatar_url.split('\static')[1].split('\\'))
+                return the_url
+            except:
+                return 'default_user.jpg'
+        self.jinja_env.globals.update(extract_avatar_url=extract_avatar_url)
+
 
     def load_environment_variables(self):
         """
@@ -51,15 +60,10 @@ class App(Flask):
         self.register_blueprint(indx, url_prefix="/")
         self.register_blueprint(auth, url_prefix="/")
 
-    def register_cors(self, instance):
+    def register_cors(self, app_instance):
         # adding CORS origins (all) for client ajax calling
         from flask_cors import CORS
-        CORS(app=instance, resource={
-                r"/*": {
-                    "origins": "*",
-                },
-            }
-         )
+        cors = CORS(app_instance, resources={r"/*": {"origins": "*"}})
 
     def register_error_handlers(self):
         """

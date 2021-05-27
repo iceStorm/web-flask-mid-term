@@ -1,8 +1,9 @@
-from flask import Blueprint, jsonify, request, render_template, flash
+import os.path
+
+from flask import Blueprint, jsonify, request, render_template, flash, current_app
 from flask_login import login_required, current_user, logout_user, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.utils import redirect
-
+from werkzeug.utils import redirect, secure_filename
 
 # defining controller
 auth = Blueprint('auth', __name__, template_folder='templates', static_folder='static', static_url_path='auth/static')
@@ -75,6 +76,61 @@ def signup():
     # showing a flash message -> redirecting to the home page
     flash(message='Successfully registered!', category='success')
     return redirect(location='/')
+
+
+@auth.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    from src.main.modules.auth.forms.profile_form import UpdateForm
+    form = UpdateForm()
+
+    from src.main.modules.user.user_model import User
+    current_user_object = User.query.get(current_user.get_id())  # type: User
+
+    # assigning current user's email for every requests --- the email field is not editable (primary key)
+    form.email.data = current_user_object.email
+    print('avatar:', form.avatar)
+
+
+    # checking if is GET request
+    if request.method == 'GET':
+        # re-assigning the full_name to latest value
+        form.full_name.data = current_user_object.full_name
+        return render_template('profile.html', form=form)
+
+    # checking if the form is not valid yet
+    if not form.validate_on_submit():
+        # re-assigning the full_name to reduce confusing
+        form.full_name.data = current_user_object.full_name
+
+        flash('form error !', category='error')
+        return render_template('profile.html', form=form)
+
+
+    # all validations passed, let's update the user's new data
+    # saving the new avatar_url to the DB if a avatar choosen
+    from src.main.modules.auth.auth_service import AuthService
+    avatar_path = None
+    print('image data:', form.avatar.data)
+    if form.avatar.data:
+        avatar_path = AuthService.save_avatar_image(form.avatar.data)
+        print('saved avatar path:', avatar_path)
+
+    try:
+        # the avatar field now is not a file (via: request.files)
+        if request.form['avatar'] == 'null':
+            avatar_path = 'null'
+    except:
+        print('')
+
+    # updating the user's new data
+    user = User(full_name=form.full_name.data, avatar_url=avatar_path)
+    AuthService.update(current_user.get_id(), user)
+
+
+    flash('Updated !', category='success')
+    return redirect(location='profile')
+
 
 
 @auth.route('/reset-password', methods=['POST'])

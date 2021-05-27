@@ -44,7 +44,7 @@
                          ring-offset-2
                          ring-blue-500
                          focus:outline-none">
-                    <img src="https://tinyurl.com/yg53kq2k"
+                    <img src="{{ url_for('static', filename=extract_avatar_url(vm.user.avatar_url)) }}"
                          class="h-8 w-8 rounded-full">
                 </button>
             </div>
@@ -60,7 +60,15 @@
                     rounded bg-white shadow-sm"
                 style="">
 
-                <a href="{{ url_for('auth.login') }}"
+
+                <p
+                   class="py-2 px-4 min-w-max pr-14
+                   text-gray-500 text-sm font-semibold
+                   py-1 mb-1 border-b border-gray-100
+                   transition duration-300 hover:bg-gray-100" style="">
+                    {{ vm.full_name }}
+                </p>
+                <a href="{{ url_for('auth.profile') }}"
                    class="py-2 px-4 min-w-max pr-14
                    text-gray-500 text-sm
                    transition duration-300 hover:bg-gray-100" style="">
