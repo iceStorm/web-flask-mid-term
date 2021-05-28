@@ -1,8 +1,8 @@
-# flask-api-boilerplate
-A python flask boilerplate for creating a new API project quicly.
-
+# web-flask-mid-term
 
 ## Using the git bash command line to run the following shell scripts.
+
+## Migrating: ./migrate.sh
 
 ## Developing: ./dev.sh
 
