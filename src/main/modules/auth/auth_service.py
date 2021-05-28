@@ -3,10 +3,11 @@ import os
 from flask import current_app
 from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 
-from src.main.modules.user.user_model import User
-from werkzeug.security import check_password_hash
 from src.app import db
+from src.main.modules.user.user_model import User
+from src.main.modules.auth.forms.signup_form import SignUpForm
 
 
 class AuthService:
@@ -21,12 +22,15 @@ class AuthService:
 
 
     @staticmethod
-    def check_password(user: User, raw_password: str) -> bool:
-        return check_password_hash(user.password_hash, raw_password)
+    def register(form: SignUpForm):
+        email = form.email.data
+        fullName = form.full_name.data
+        password = form.password.data
 
+        # creating a new user based-on the Form's data
+        # the user's password auto encrypted via the User's constructor
+        new_user = User(email=email, full_name=fullName, raw_password=password)
 
-    @staticmethod
-    def register(new_user: User):
         db.session.add(new_user)
         db.session.commit()
 
@@ -57,7 +61,13 @@ class AuthService:
 
             # saving the avatar image
             # print('current_app.instance_path:', current_app.instance_path)
-            the_path = os.path.abspath(os.path.join(current_app.instance_path, 'main/base/static/users/avatars', the_avatar_name))
+            the_path = os.path.abspath(
+                os.path.join(
+                    current_app.instance_path,
+                    'main/base/static/users/avatars',
+                    the_avatar_name,
+                )
+            )
             form_image_data.save(the_path)
 
         # returning the saved image path

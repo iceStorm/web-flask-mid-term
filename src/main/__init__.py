@@ -16,7 +16,7 @@ class App(Flask):
         self.load_environment_variables()
         self.register_base_components()
         self.register_blueprints()
-        # self.register_cors()
+        self.register_cors()
         self.register_error_handlers()
         self.register_login_manager()
 
@@ -45,10 +45,10 @@ class App(Flask):
         self.register_blueprint(indx, url_prefix="/")
         self.register_blueprint(auth, url_prefix="/")
 
-    def register_cors(self, app_instance):
+    def register_cors(self):
         # adding CORS origins (all) for client ajax calling
         from flask_cors import CORS
-        cors = CORS(app_instance, resources={r"/*": {"origins": "*"}})
+        cors = CORS(app=self, resources={r"/*": {"origins": "*"}})
 
     def register_error_handlers(self):
         """

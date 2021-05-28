@@ -2,7 +2,6 @@ import os.path
 
 from flask import Blueprint, jsonify, request, render_template, flash, current_app
 from flask_login import login_required, current_user, logout_user, login_user
-from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import redirect, secure_filename
 
 # defining controller
@@ -60,18 +59,9 @@ def signup():
     if not form.validate_on_submit():
         return render_template('signup.html', form=form)
 
-    # all validation passed, let's continue handle the process
+    # all validation passed, let's continue handle the signup process
     from src.main.modules.auth.auth_service import AuthService
-    from src.main.modules.user.user_model import User
-
-    # grabbing form fields data
-    email = form.email.data
-    fullName = form.full_name.data
-    password = form.password.data
-
-    # creating a new user based-on the Form's data
-    new_user = User(email=email, full_name=fullName, password_hash=generate_password_hash(password, method='sha256'))
-    AuthService.register(new_user)
+    AuthService.register(form)
 
     # showing a flash message -> redirecting to the home page
     flash(message='Successfully registered!', category='success')
@@ -130,7 +120,6 @@ def profile():
 
     flash('Updated !', category='success')
     return redirect(location='profile')
-
 
 
 @auth.route('/reset-password', methods=['POST'])

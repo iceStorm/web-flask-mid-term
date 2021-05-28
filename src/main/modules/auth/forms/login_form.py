@@ -18,9 +18,9 @@ def check_password_format(form, field):
 
 
 def is_email_exists(form, field):
-    # from src.main.modules.user.user_model import User
-    # if User.query.get(field.data) is None:
-    #     raise ValidationError(message='The email is not registered yet')
+    """
+    Checking if the email that client entered is have already exist.
+    """
     if not AuthService.is_user_already_exists(field.data):
         raise ValidationError(message='The email is not registered yet')
 
@@ -55,9 +55,10 @@ class LoginForm(FlaskForm):
         if not FlaskForm.validate(self):
             return False
 
-        # checking if the provided password is not True (with the one in database
+        # checking if the provided password is not True (with the one in the database)
+        # the user instance below is always exists because the form's email validation did check.
         user = User.query.get(self.email.data)
-        if AuthService.check_password(user, self.password.data):
+        if user.check_password(self.password.data):
             self.password.errors.append('The password you just provided was wrong')
             return False
 

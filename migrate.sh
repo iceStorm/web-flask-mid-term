@@ -10,5 +10,5 @@ export PYTHONPATH=$MAIN_DIR:$ROOT_DIR
 #export
 
 #flask db init
-#flask db migrate -m "create table users"
-flask db upgrade
+flask db migrate -m "create table users"
+#flask db upgrade

@@ -42,22 +42,19 @@ def create_app():
     from main import App
     app = App(instance_path=add_sys_paths()[0])
 
+    print("\n[INITIALIZING THE DATABASE...]")
+    db.init_app(app=app)
+
     # migrating Models to DB
     from flask_migrate import Migrate
     import main.modules.user.user_model as user_model
     from main.modules.user.user_model import User
-    migrate = Migrate()
-    migrate.init_app(app, db)
-
-    print("\n[INITIALIZING THE DATABASE...]")
-    db.init_app(app=app)
-
-    app.register_cors(app_instance=app)
+    migrate = Migrate(app, db)
 
     # ensuring the tables is exist or create new ones
-    # with app.app_context():
-    #     print("\n[ENSURING THE DATABASE...]")
-    #     ensure_tables()
+    with app.app_context():
+        print("\n[ENSURING THE DATABASE...]")
+        ensure_tables()
 
     return app
 
