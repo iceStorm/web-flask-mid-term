@@ -13,7 +13,10 @@ class App(Flask):
         self.template_folder = './base/templates'
         self.static_folder = './base/static'
 
+        # loading environment variables
         self.load_environment_variables()
+
+        # registering essential partials for the app
         self.register_base_components()
         self.register_blueprints()
         self.register_cors()
@@ -29,7 +32,7 @@ class App(Flask):
 
         def extract_avatar_url(full_avatar_url: str):
             try:
-                the_url = '/'.join(full_avatar_url.split('\static')[1].split('\\'))
+                the_url = '/'.join(full_avatar_url.split('\\static')[1].split('\\'))
                 return the_url
             except:
                 return 'default_user.jpg'

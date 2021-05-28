@@ -1,8 +1,8 @@
-"""change Project model pk to name
+"""v2
 
-Revision ID: fb323c91a27a
-Revises: 39917c13c46e
-Create Date: 2021-05-28 17:15:49.780753
+Revision ID: 6b20396420cb
+Revises: 
+Create Date: 2021-05-28 20:34:37.038825
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'fb323c91a27a'
-down_revision = '39917c13c46e'
+revision = '6b20396420cb'
+down_revision = None
 branch_labels = None
 depends_on = None
 

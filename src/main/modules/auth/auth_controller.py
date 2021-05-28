@@ -1,6 +1,6 @@
 import os.path
 
-from flask import Blueprint, jsonify, request, render_template, flash, current_app
+from flask import Blueprint, jsonify, request, render_template, flash, current_app, url_for
 from flask_login import login_required, current_user, logout_user, login_user
 from werkzeug.utils import redirect, secure_filename
 
@@ -20,6 +20,9 @@ def login():
         if current_user.is_authenticated:
             flash('You\'re already logged in!', category='warning')
             return redirect('/')
+
+        if request.args.get('email'):
+            form.email.data = request.args.get('email')
         return render_template('login.html', form=form)
 
     # checking if the form is not valid yet
@@ -67,11 +70,7 @@ def signup():
     flash(message='Successfully registered!', category='success')
 
     # showing the login page and auto filling data
-    from src.main.modules.auth.forms.login_form import LoginForm
-    login_form = LoginForm()
-    login_form.email.data = form.email.data
-    login_form.password.data = form.password.data
-    return render_template('login.html', form=login_form)
+    return redirect(url_for('auth.login', email=form.email.data))
 
 
 @auth.route('/profile', methods=['GET', 'POST'])
