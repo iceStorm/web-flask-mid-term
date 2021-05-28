@@ -9,8 +9,8 @@ class User(UserMixin, db.Model):
     __tablename__ = 'Users'
     __table_args__ = {'extend_existing': True}
 
-    id = db.Column(db.Integer, Sequence(name='user_id_seq'))
-    email = db.Column(db.String(100), primary_key=True)
+    id = db.Column(db.Integer, autoincrement=True)
+    email = db.Column(db.String(100), primary_key=True, index=True)
     full_name = db.Column(db.String(100), index=True)
     avatar_url = db.Column(db.String(100), index=True)
     password_hash = db.Column(db.String(100))
@@ -42,4 +42,5 @@ class User(UserMixin, db.Model):
 
 
 def ensure():
+    print('Ensuring the User table...')
     db.create_all()

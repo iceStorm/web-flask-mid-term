@@ -65,7 +65,13 @@ def signup():
 
     # showing a flash message -> redirecting to the home page
     flash(message='Successfully registered!', category='success')
-    return redirect(location='/')
+
+    # showing the login page and auto filling data
+    from src.main.modules.auth.forms.login_form import LoginForm
+    login_form = LoginForm()
+    login_form.email.data = form.email.data
+    login_form.password.data = form.password.data
+    return render_template('login.html', form=login_form)
 
 
 @auth.route('/profile', methods=['GET', 'POST'])

@@ -49,12 +49,9 @@ def create_app():
     from flask_migrate import Migrate
     import main.modules.user.user_model as user_model
     from main.modules.user.user_model import User
+    from main.modules.user import user_model
+    print("\n\n[MIGRATING THE DATABASE...]")
     migrate = Migrate(app, db)
-
-    # ensuring the tables is exist or create new ones
-    with app.app_context():
-        print("\n[ENSURING THE DATABASE...]")
-        ensure_tables()
 
     return app
 
@@ -69,6 +66,11 @@ db = SQLAlchemy()
 # function calls should be wrapped here, preventing: import-auto executing
 if __name__ == "__main__":
     app = create_app()
+
+    # ensuring the tables is exist or create new ones
+    # with app.app_context():
+    #     print("\n[ENSURING THE DATABASE...]")
+    #     ensure_tables()
 
     print("\n[RUNNING...]")
     app.run()

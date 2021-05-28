@@ -8,5 +8,5 @@ APP_NAME = "Todo-List App"
 SECRET_KEY = "iceStorm"
 BCRYPT_LOG_ROUNDS = 12
 
-SQLALCHEMY_DATABASE_URI = 'sqlite:///../db/app.sqlite'
+SQLALCHEMY_DATABASE_URI = 'sqlite:///../../db/app.sqlite'
 SQLALCHEMY_TRACK_MODIFICATIONS = True
