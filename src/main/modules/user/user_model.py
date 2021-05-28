@@ -9,10 +9,10 @@ class User(UserMixin, db.Model):
     __tablename__ = 'Users'
     __table_args__ = {'extend_existing': True}
 
-    id = db.Column(db.Integer, autoincrement=True)
+    # id = db.Column(db.Integer, autoincrement=True)
     email = db.Column(db.String(100), primary_key=True, index=True)
     full_name = db.Column(db.String(100), index=True)
-    avatar_url = db.Column(db.String(100), index=True)
+    avatar_url = db.Column(db.String(100))
     password_hash = db.Column(db.String(100))
 
     def __init__(self, email=None, full_name=None, raw_password=None, avatar_url=None):
@@ -40,7 +40,3 @@ class User(UserMixin, db.Model):
         """
         return check_password_hash(self.password_hash, raw_password)
 
-
-def ensure():
-    print('Ensuring the User table...')
-    db.create_all()

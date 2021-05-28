@@ -7,9 +7,8 @@ ROOT_DIR=.
 MAIN_DIR=./src/main/
 export PYTHONPATH=$MAIN_DIR:$ROOT_DIR
 
-#export
-
+#export # showing all environment variables
 
 #flask db init --directory db/migrations
-flask db migrate --directory db/migrations -m "create table users -v3"
-#flask db upgrade
+flask db migrate --directory db/migrations -m "change Project model pk to name"
+flask db upgrade --directory db/migrations

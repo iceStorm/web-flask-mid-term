@@ -1,4 +1,3 @@
-# standard libs
 import sys
 import os
 from pathlib import Path
@@ -39,7 +38,7 @@ def show_message(message: str):
 def create_app():
     # initializing the app
     print("\n[INITIALIZING THE APP...]")
-    from main import App
+    from src.main import App
     app = App(instance_path=add_sys_paths()[0])
 
     print("\n[INITIALIZING THE DATABASE...]")
@@ -47,12 +46,18 @@ def create_app():
 
     # migrating Models to DB
     from flask_migrate import Migrate
-    import main.modules.user.user_model as user_model
-    from main.modules.user.user_model import User
-    from main.modules.user import user_model
     print("\n\n[MIGRATING THE DATABASE...]")
-    migrate = Migrate(app, db)
+    migrate = Migrate()
+    with app.app_context():
+        # allow dropping column for sqlite
+        if db.engine.url.drivername == 'sqlite':
+            migrate.init_app(app, db, render_as_batch=True)
+        else:
+            migrate.init_app(app, db)
 
+    # importing all model (tables) is needed for flask-migrate to detect changes
+    from main.modules.user import user_model
+    from main.modules.project import project_model
     return app
 
 
@@ -66,11 +71,6 @@ db = SQLAlchemy()
 # function calls should be wrapped here, preventing: import-auto executing
 if __name__ == "__main__":
     app = create_app()
-
-    # ensuring the tables is exist or create new ones
-    # with app.app_context():
-    #     print("\n[ENSURING THE DATABASE...]")
-    #     ensure_tables()
 
     print("\n[RUNNING...]")
     app.run()

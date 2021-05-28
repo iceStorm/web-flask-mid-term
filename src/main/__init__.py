@@ -54,7 +54,7 @@ class App(Flask):
         """
         Registering custom error handlers that show custom view (html page) for the app.
         """
-        from src.main.error_handlers import ErrorHandler
+        from src.main.base.helpers.error_handlers import ErrorHandler
 
         self.register_error_handler(403, ErrorHandler.forbidden)
         self.register_error_handler(404, ErrorHandler.not_found)
