@@ -71,8 +71,9 @@
                     Profile
                 </a>
                 <a href="{{ url_for('auth.logout') }}"
+                   id="btn-logout"
                    class="py-2 px-4 min-w-max pr-14
-                   text-gray-500 text-sm
+                   text-gray-500 text-sm dynamic
                    transition duration-300 hover:bg-gray-100" style="">
                     Sign out
                 </a>
@@ -84,5 +85,15 @@
                 display: flex;
             }
         </style>
+
+        <script>
+            $('#btn-logout').click(function (e) {
+                e.preventDefault();
+
+                $.confirm('Are you sure you want to logout ?', () => {
+                    navigateTo('/logout');
+                });
+            });
+        </script>
     {% endif %}
 </div>

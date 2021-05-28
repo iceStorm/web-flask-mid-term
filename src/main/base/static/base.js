@@ -88,7 +88,7 @@ loadProgressBar({
 
 setATagNavigate();
 function setATagNavigate() {
-    $('a').each(function(index, elem) {
+    $('a:not(.dynamic)').each(function(index, elem) {
         $(this).unbind('click').click((e) => {
             e.preventDefault();
             navigateTo($(this).attr('href'));

@@ -105,8 +105,8 @@
         }
     }
 
-    var modalTitle = 'Tooltip';
-    var modalButtonOk = 'Okey';
+    var modalTitle = 'Todo List App';
+    var modalButtonOk = 'Ok';
     var modalButtonCancel = 'Cancel';
     var modalPreloaderTitle = 'Loading';
     $.extend({

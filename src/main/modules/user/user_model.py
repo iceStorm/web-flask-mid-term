@@ -11,8 +11,8 @@ class User(UserMixin, db.Model):
 
     email = db.Column(db.String(100), primary_key=True, index=True)
     full_name = db.Column(db.String(100), index=True, nullable=False)
-    avatar_url = db.Column(db.String(100))
     password_hash = db.Column(db.String(255), nullable=False)
+    avatar_url = db.Column(db.String(255))
 
     def __init__(self, email=None, full_name=None, raw_password=None, avatar_url=None):
         """
@@ -29,7 +29,7 @@ class User(UserMixin, db.Model):
 
     @staticmethod
     def gen_password_hash(raw_password):
-        return generate_password_hash(raw_password, method='sha256') if raw_password else None
+        return generate_password_hash(raw_password) if raw_password else None
 
     def get_id(self):
         """
