@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Markup
+from flask import Flask
 
 
 class App(Flask):
@@ -34,21 +34,6 @@ class App(Flask):
             except:
                 return 'default_user.jpg'
         self.jinja_env.globals.update(extract_avatar_url=extract_avatar_url)
-
-
-    def load_environment_variables(self):
-        """
-        Loading the configured environment variables.
-        """
-        # Load the default configuration (../config/default.py)
-        self.config.from_object('config.default')
-
-        # Load the configuration from the instance folder --- overriding the above
-        self.config.from_pyfile('./instance/config.py')
-
-        # Load the file specified by the APP_CONFIG_FILE environment variable
-        # Variables defined here will override those in the default configuration
-        self.config.from_envvar('APP_CONFIG_FILE')
 
     def register_blueprints(self):
         """
@@ -90,3 +75,18 @@ class App(Flask):
         @login_manager.user_loader
         def load_user(email):
             return User.query.get(email)
+
+    def load_environment_variables(self):
+        """
+        Loading the configured environment variables.
+        """
+        # Load the default configuration (../config/default.py)
+        self.config.from_object('config.default')
+
+        # Load the configuration from the instance folder --- overriding the above
+        self.config.from_pyfile('./instance/config.py')
+
+        # Load the file specified by the APP_CONFIG_FILE environment variable
+        # Variables defined here will override those in the default configuration
+        self.config.from_envvar('APP_CONFIG_FILE')
+

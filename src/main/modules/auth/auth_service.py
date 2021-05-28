@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 
 from src.main.modules.user.user_model import User
 from werkzeug.security import check_password_hash
-from src.run import db
+from src.app import db
 
 
 class AuthService:

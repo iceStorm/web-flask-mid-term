@@ -26,7 +26,7 @@ class SignUpForm(FlaskForm):
         render_kw={'autocomplete': 'email'},
         validators=[
             InputRequired(),
-            Regexp(regex='', message='The email format is invalid'),
+            Regexp(regex='^[a-z][a-z0-9_\.]{5,32}@[a-z0-9]{2,}(\.[a-z0-9]{2,4}){1,2}$', message='The email format is invalid'),
             is_email_exists,
         ]
     )
