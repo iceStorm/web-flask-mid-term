@@ -1,4 +1,4 @@
-const BACKEND_ENDPOINT = 'http://127.0.0.1:5000';
+const BACKEND_ENDPOINT = '/';
 
 // setting the baseURL for backend API calls
 axios.defaults.baseURL = BACKEND_ENDPOINT;
