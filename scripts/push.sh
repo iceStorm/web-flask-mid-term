@@ -1,8 +1,11 @@
-#./scripts/freeze.sh
+echo "Creating requirements.txt..."
+./freeze.sh
+echo "Done."
+echo
 
-echo "Enter commit message: "
-read commitMessage
+read -p "Enter commit message: " commitMessage
+
 
 git add .
-git commit -m $commitMessage
+git commit -m "$commitMessage"
 git push origin master
