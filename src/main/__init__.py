@@ -34,7 +34,8 @@ class App(Flask):
             try:
                 the_url = '/'.join(full_avatar_url.split('\\static')[1].split('\\'))
                 return the_url
-            except:
+            except Exception as ect:
+                print(f'\nError to extract url [{full_avatar_url}]:', ect)
                 return 'default_user.jpg'
         self.jinja_env.globals.update(extract_avatar_url=extract_avatar_url)
 
