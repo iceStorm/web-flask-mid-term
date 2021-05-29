@@ -1,5 +1,8 @@
-./scripts/build.sh
-#git add ./requirements.txt
+#./scripts/freeze.sh
+
+echo "Enter commit message: "
+read commitMessage
+
 git add .
-git commit -m "update requirements.txt"
+git commit -m $commitMessage
 git push origin master

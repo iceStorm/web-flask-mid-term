@@ -1,0 +1,6 @@
+/*!
+ * Doka Image Editor Sandbox 7.12.1
+ * (c) 2018-2021 PQINA Inc. - All Rights Reserved
+ * This version of Doka Image Editor is for use on pqina.nl only
+ * License: https://pqina.nl/doka/license/
+ */
