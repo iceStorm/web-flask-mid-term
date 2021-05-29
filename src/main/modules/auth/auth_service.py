@@ -47,6 +47,10 @@ class AuthService:
             print('resetting the avatar_url...')
             the_user.avatar_url = None  # removing the avatar_url value
         elif user.avatar_url is not None:
+            # deleting the old avatar
+            if os.path.isfile(the_user.avatar_url):
+                os.unlink(the_user.avatar_url)
+                print('removed the old avatar: %s\n' % the_user.avatar_url)
             the_user.avatar_url = user.avatar_url
 
         db.session.commit()
@@ -60,7 +64,7 @@ class AuthService:
             the_avatar_name = secure_filename(filename=form_image_data.filename)
 
             # saving the avatar image
-            # print('current_app.instance_path:', current_app.instance_path)
+            print('current_app.instance_path:', current_app.instance_path)
             the_path = os.path.abspath(
                 os.path.join(
                     current_app.instance_path,
@@ -68,6 +72,8 @@ class AuthService:
                     the_avatar_name,
                 )
             )
+
+            the_path = '/'.join(the_path.split('\\'))
             form_image_data.save(the_path)
 
         # returning the saved image path

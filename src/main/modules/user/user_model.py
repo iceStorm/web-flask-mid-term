@@ -23,13 +23,14 @@ class User(UserMixin, db.Model):
         self.full_name = full_name
         self.avatar_url = avatar_url
 
-        password_hash = User.gen_password_hash(raw_password)
-        print(f'hashing the password {raw_password}:', password_hash)
-        self.password_hash = password_hash
+        if raw_password:
+            password_hash = User.gen_password_hash(raw_password)
+            print(f'hashing the password {raw_password}:', password_hash)
+            self.password_hash = password_hash
 
     @staticmethod
     def gen_password_hash(raw_password):
-        return generate_password_hash(raw_password) if raw_password else None
+        return generate_password_hash(raw_password)
 
     def get_id(self):
         """
