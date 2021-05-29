@@ -6,6 +6,6 @@ echo
 read -p "Enter commit message: " commitMessage
 
 
-git add .
+git add --all
 git commit -m "$commitMessage"
 git push origin master

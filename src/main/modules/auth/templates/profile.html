@@ -164,13 +164,25 @@
 
 
     <!--  FilePond CSS  -->
-    <link href="{{ url_for('static', filename='libraries/filepond/filepond.css') }}" rel="stylesheet">
     <script src="{{ url_for('static', filename='libraries/filepond/filepond-plugin-file-validate-type.js') }}"></script>
+    <script src="{{ url_for('static', filename='libraries/filepond/filepond-plugin-file-metadata.js') }}"></script>
+
+    <!--  FilePondPluginImageEdit  -->
+    <link href="{{ url_for('static', filename='libraries/filepond/filepond-plugin-image-edit.css') }}" rel="stylesheet"/>
+    <script src="{{ url_for('static', filename='libraries/filepond/filepond-plugin-image-edit.js') }}"></script>
+
+    <!--  FilePondPluginImagePreview  -->
     <link href="{{ url_for('static', filename='libraries/filepond/filepond-plugin-image-preview.css') }}" rel="stylesheet"/>
     <script src="{{ url_for('static', filename='libraries/filepond/filepond-plugin-image-preview.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='libraries/filepond/filepond-plugin-file-metadata.js') }}"></script>
-    <!--  FilePondJS  -->
+
+    <!--  FilePond Base  -->
+    <link href="{{ url_for('static', filename='libraries/filepond/filepond.css') }}" rel="stylesheet">
     <script src="{{ url_for('static', filename='libraries/filepond/filepond.js') }}"></script>
+
+    <!--  DokaJS Base  -->
+    <link href="{{ url_for('static', filename='libraries/filepond/doka.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='libraries/filepond/doka.min.js') }}"></script>
+
 
     <script>
         // Turn all file input elements into ponds
@@ -178,6 +190,7 @@
             FilePondPluginFileValidateType,
             FilePondPluginImagePreview,
             FilePondPluginFileMetadata,
+            FilePondPluginImageEdit,
         );
 
         FilePond.setOptions({
@@ -189,12 +202,47 @@
 
         pond = FilePond.create(document.querySelector('input[type="file"]'), {
             acceptedFileTypes: ['image/png'],
+
             instantUpload: false,
             allowMultiple: false,
+
             imagePreviewMaxHeight: 100,
             imagePreviewHeight: 100,
+
             stylePanelLayout: 'compact circle',
-            styleButtonRemoveItemPosition: 'center bottom',
+            //styleButtonRemoveItemPosition: 'center bottom',
+
+            allowImageEdit: true,
+            imageEditAllowEdit: true,
+            styleImageEditButtonEditItemPosition: 'bottom right',
+            imageCropAspectRatio: 1,
+            imageResizeTargetWidth: 200,
+            imageEditInstantEdit: true,
+
+            // configure Doka
+              imageEditEditor: Doka.create({
+                // Doka.js options here ...
+
+                cropAspectRatioOptions: [
+                  {
+                    label: "Free",
+                    value: null,
+                  },
+                  {
+                    label: "Portrait",
+                    value: 1.25,
+                  },
+                  {
+                    label: "Square",
+                    value: 1,
+                  },
+                  {
+                    label: "Landscape",
+                    value: 0.75,
+                  },
+                ],
+              }),
+
             files: [
                 {
                     // the server file reference
