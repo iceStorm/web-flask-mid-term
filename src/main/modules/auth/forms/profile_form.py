@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms.fields.html5 import EmailField
 from wtforms.fields import StringField, PasswordField
-from wtforms.validators import InputRequired, Length, EqualTo, Regexp, ValidationError
+from wtforms.validators import InputRequired, Length, EqualTo, Regexp, ValidationError, DataRequired
 from flask import request
 from flask_login import current_user
 
@@ -23,7 +23,7 @@ class UpdateForm(FlaskForm):
     full_name = StringField(
         label='Full name',
         validators=[
-            InputRequired(message='Please fill out this field'),
+            DataRequired(message='Please fill out this field'),
             Length(min=2, max=50, message='The length must between 2 and 50 letters'),
         ]
     )

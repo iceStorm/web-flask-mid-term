@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 
-
 {% block content %}
     {{ center_main() }}
 
@@ -175,10 +174,6 @@
     <link href="{{ url_for('static', filename='libraries/filepond/filepond.css') }}" rel="stylesheet">
     <script src="{{ url_for('static', filename='libraries/filepond/filepond.js') }}"></script>
 
-    <!--  DokaJS Base  -->
-    <link href="{{ url_for('static', filename='libraries/filepond/doka.css') }}" rel="stylesheet">
-    <script src="{{ url_for('static', filename='libraries/filepond/doka.min.js') }}"></script>
-
 
     <script>
         // Turn all file input elements into ponds
@@ -259,9 +254,10 @@
 
             axios.post(e.target.action, formData)
                 .then(res => {
-                    replaceContent(res.data, res.request.responseURL);
+                    replaceContent(res);
                 })
                 .catch(err => {
+                    showToast(err.response.data.message, 'error');
                     console.log(err);
                 });
         });

@@ -109,7 +109,7 @@ $(window).on("popstate", function (e) {
 function navigateTo(path) {
     axios.get(path)
         .then(res => {
-            replaceContent(res.data, path);
+            replaceContent(res);
         })
         .catch(err => {
             console.log(err);
@@ -117,8 +117,13 @@ function navigateTo(path) {
 }
 
 
-// replacing the #main's innerHTML
-function replaceContent(html, path) {
+/**
+ * Replacing the #main's innerHTML.
+ */
+function replaceContent(axiosResponse) {
+    const html = axiosResponse.data;
+    const path = axiosResponse.request.responseURL;
+
     // expression: $.parseHTML(data, context = document, keepScripts = false)
     const ajaxContent = $('<div>').append($.parseHTML(html, document, true));
     // console.log('The whole content:', html);
@@ -140,7 +145,10 @@ function replaceContent(html, path) {
 }
 
 
-setSubmit()
+/**
+ * Setting ajax submit for forms that has the 'ajax' class.
+ */
+setSubmit();
 function setSubmit() {
     $('form.ajax').each(function(index, elem) {
         $(this).submit((e) => {
@@ -148,9 +156,10 @@ function setSubmit() {
 
             axios.post(e.target.action, new FormData(e.target))
                 .then(res => {
-                    replaceContent(res.data, res.request.responseURL);
+                    replaceContent(res);
                 })
                 .catch(err => {
+                    showToast(err.response.data.message, 'error');
                     console.log(err);
                 });
         });

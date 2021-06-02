@@ -1,40 +1,16 @@
 <!DOCTYPE html>
+
+{# importing global macros #}
+{% from "macros.html" import center_main %}
+
+
 <html lang="en">
 <head>
     <meta charset="UTF-8" >
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
-    <!--  jQuery  -->
-    <script src="../static/libraries/jquery/jquery-3.6.0.min.js"></script>
-
-    <!--  Axios  -->
-    <script src="../static/libraries/axios/axios.js"></script>
-
-    <!--  NProgress  -->
-    <link rel="stylesheet" href="../static/libraries/progressbar/nprogress.css">
-    <script src="../static/libraries/progressbar/index.js"></script>
-
-
-    <!--  TailwindCSS  -->
-    <link rel="stylesheet" href="../static/libraries/tailwind-css/css/main.css">
-
-    <!--  ReefJS  -->
-    <script src="https://cdn.jsdelivr.net/npm/reefjs@8/dist/reef.min.js" defer></script>
-    <!--  SnorkelJS - For ReefJS's routing  -->
-    <script src="https://cdn.jsdelivr.net/npm/reefjs@8/dist/snorkel.min.js" defer></script>
-
-    <!--  animate.css  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-
-
-    <!--  iOS modal  -->
-    <link rel="stylesheet" href="../static/libraries/iOS-Modal/modal.css">
-    <script src="../static/libraries/iOS-Modal/modal.js"></script>
-
-    <!--  toaster  -->
-    <link rel="stylesheet" href="../static/libraries/toast/td-msessage.css">
-    <script src="../static/libraries/toast/td-message.js" defer></script>
+    {# including javascript, css files, #}
+    {% include "head-files.html" %}
 
 
     <!--  showing the APP_NAME environment variable  -->
@@ -49,38 +25,17 @@
                 <a href="/" class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-blue-400" style="font-size: 27px;">Todo List App</a>
             </div>
             <nav id="nav" class="px-9 flex justify-between items-stretch" style="border-top: 1px solid #eee; background: #fcfcfc6b;">
+                {# using the |safe filter to ensure the content returned from the function is safe, no need escaping #}
                 {{ navbar_component()|safe }}
             </nav>
         </header>
 
 
         <main id="main" class="container relative flex flex-col flex-auto bg-white p-9">
-            {# this macro use to center-middle content in the #main section #}
-            {%- macro center_main() %}
-                <style>
-                    #main {
-                        justify-content: center;
-                        align-items: center;
-                    }
-                </style>
-            {% endmacro -%}
-
-
-            {# rendering toasts messages #}
-            {% with flash_msgs = get_flashed_messages(with_categories=True) %}
-                {% if flash_msgs %}
-                    {%- for cat, msg in flash_msgs %}
-                        {# showToast(msg, cat)|safe #}
-                        <script>
-                            showToast('{{ msg }}', '{{ cat }}');
-                        </script>
-                    {% endfor -%}
-                {% endif %}
-            {% endwith %}
-
+            {# the "flash.html" have to placed inside the #main, because only the #main (& #nav) appended from ajax calls. #}
+            {% include "flash.html" %}
 
             {% block content %} {% endblock %}
-            {% block content_scripts %} {% endblock %}
         </main>
 
 
