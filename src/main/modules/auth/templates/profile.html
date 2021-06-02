@@ -208,19 +208,22 @@
 
             imagePreviewMaxHeight: 100,
             imagePreviewHeight: 100,
+			imageCropAspectRatio: '1:1',
+			imageResizeTargetWidth: 200,
+			imageResizeTargetHeight: 200,
 
             stylePanelLayout: 'compact circle',
-            //styleButtonRemoveItemPosition: 'center bottom',
+            styleButtonRemoveItemPosition: 'center bottom',
 
             allowImageEdit: true,
             imageEditAllowEdit: true,
             styleImageEditButtonEditItemPosition: 'bottom right',
             imageCropAspectRatio: 1,
             imageResizeTargetWidth: 200,
-            imageEditInstantEdit: true,
+            //imageEditInstantEdit: true,
 
             // configure Doka
-              imageEditEditor: Doka.create({
+              /*imageEditEditor: Doka.create({
                 // Doka.js options here ...
 
                 cropAspectRatioOptions: [
@@ -241,7 +244,7 @@
                     value: 0.75,
                   },
                 ],
-              }),
+              }),*/
 
             files: [
                 {

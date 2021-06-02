@@ -43,14 +43,17 @@ class AuthService:
         # checking if the avatar is modified
         print('avatar_path:', user.avatar_url)
 
-        if user.avatar_url == 'null':
+        if user.avatar_url == 'null': # when the user removes avatar --> also remove in the DB record
             print('resetting the avatar_url...')
-            the_user.avatar_url = None  # removing the avatar_url value
-        elif user.avatar_url is not None:
-            # deleting the old avatar
-            if os.path.isfile(the_user.avatar_url):
-                os.unlink(the_user.avatar_url)
-                print('removed the old avatar: %s\n' % the_user.avatar_url)
+            the_user.avatar_url = None
+        elif user.avatar_url is not None:   # when the user uploads a new avatar
+            # deleting the old avatar if exists
+            if the_user.avatar_url: # make sure the user's avatar is exists in the DB (not None)
+                if os.path.isfile(the_user.avatar_url): # make sure the file is exists on the file system
+                    os.unlink(the_user.avatar_url)
+                    print('removed the old avatar: %s\n' % the_user.avatar_url)
+
+            # assigning the new avatar url to the user
             the_user.avatar_url = user.avatar_url
 
         db.session.commit()
