@@ -2,7 +2,7 @@
     {% for item in vm.nav_items %}
         <a
             href="{{ item.href }}"
-            class="px-3 py-4
+            class="px-3 py-4 ajax
             flex justify-center items-center
             font-semibold text-gray-300
             transition duration-300
@@ -72,8 +72,8 @@
                 </a>
                 <a href="{{ url_for('auth.logout') }}"
                    id="btn-logout"
-                   class="py-2 px-4 min-w-max pr-14
-                   text-gray-500 text-sm dynamic
+                   class="py-2 px-4 min-w-max pr-14 not-ajax
+                   text-gray-500 text-sm
                    transition duration-300 hover:bg-gray-100" style="">
                     Sign out
                 </a>

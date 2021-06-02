@@ -67,7 +67,11 @@ err => {
 });
 
 
-function showToast(text, type, duration=4000) {
+
+/**
+ *  The showToast function.
+ */
+function showToast(text, type, duration=5000) {
     // console.log('showing toast:', text);
 
     $.message({
@@ -79,16 +83,22 @@ function showToast(text, type, duration=4000) {
 }
 
 
-// initializing the progressbar
+/**
+  * Initializing the progressbar.
+  */
 loadProgressBar({
     speed: 450,
     trickleRate: 0.02,
     trickleSpeed: 1750,
 });
 
+
+/*
+ * Setting ajax navigating for a tags that don't have the '' class.
+ */
 setATagNavigate();
 function setATagNavigate() {
-    $('a:not(.dynamic)').each(function(index, elem) {
+    $('a:not(.not-ajax)').each(function(index, elem) {
         $(this).unbind('click').click((e) => {
             e.preventDefault();
             navigateTo($(this).attr('href'));
@@ -97,6 +107,9 @@ function setATagNavigate() {
 }
 
 
+/**
+ * Handling on user pressed the Back button on the browser, or even going back by code.
+ */
 $(window).on("popstate", function (e) {
     console.log('\back pressed:', location.href);
     navigateTo(location.href);
@@ -106,6 +119,10 @@ $(window).on("popstate", function (e) {
     }*/
 });
 
+
+/*
+ * Navigating to the desired path by ajax calling.
+ */
 function navigateTo(path) {
     axios.get(path)
         .then(res => {
