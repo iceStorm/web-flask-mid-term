@@ -3,13 +3,32 @@
     font-family: 'Roboto';
 }
 @font-face {
-  src: url('./fonts/Inter/Inter-Var.ttf');
-  font-family: Inter;
-}
-@font-face {
   src: url('./fonts/australia-font/Australia-X3qGo.otf');
   font-family: Australia;
 }
+
+@font-face {
+  src: url('./fonts/quick-kiss-font/QuickKissPersonalUse-PxlZ.ttf');
+  font-family: QuickKiss;
+}
+@font-face {
+  src: url('./fonts/countryside-font/Countryside-YdKj.ttf');
+  font-family: Countryside;
+}
+@font-face {
+  src: url('./fonts/brightons-font/Brightons-OVOro.otf');
+  font-family: Brightons;
+}
+@font-face {
+  src: url('./fonts/cinderela-font/CinderelaPersonalUseRegular-RDvM.ttf');
+  font-family: Cinderela;
+}
+@font-face {
+  src: url('./fonts/onelove-font/OneloveFreeForPersonalUse-6Yx5g.ttf');
+  font-family: Onelove;
+}
+
+
 
 
 html, body {

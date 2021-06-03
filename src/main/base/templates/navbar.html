@@ -16,7 +16,7 @@
     {% endfor %}
 </div>
 
-<div class="nav-link-user-area flex justify-between items-center gap-7 py-3">
+<div class="nav-link-user-area flex justify-between items-center gap-7">
     {% if not vm.user.is_authenticated %}
         <a href="{{ url_for('auth.login') }}"
            style="{% if url_for(request.endpoint) == '/login' %}display: none; {% endif %}"
@@ -36,53 +36,87 @@
             Create account
         </a>
     {% else %}
-        <div id="nav-user-area" class="relative">
+        <div id="nav-user-area"
+             class="relative"
+             x-data="{ open: false }">
+
             <div class="nav-user-area-avatar">
-                <button class="
-                         rounded-full
-                         ring-2
-                         ring-offset-2
-                         ring-blue-500
-                         focus:outline-none">
-                    <img src="{{ url_for('static', filename=extract_avatar_url(vm.user.avatar_url)) }}"
-                         class="h-8 w-8 rounded-full">
+                <button @click="open = true"
+                        class="
+                        flex justify-end items-center
+                        rounded-full
+                        ring-2 ring-offset-2 ring-blue-500
+                        focus:outline-none">
+                    <p class="px-4
+                       text-gray-500 text-sm font-semibold
+                       transition duration-300" style="">
+                        {{ vm.full_name }}
+                    </p>
+                    <img src="{{ url_for('static', filename=extract_avatar_url(vm.user.avatar_url)) }}" class="h-8 w-8 rounded-full">
                 </button>
             </div>
 
-            <div class="
-                    hidden overflow-hidden
-                    flex flex-col justify-start align-start
-                    nav-user-area-dropdown
-                    absolute z-50 right-0 py-1
-                    border border-gray-200
-                    rounded bg-white shadow-sm">
+            <div x-show.transition.origin.top.right="open" @click.away="open = false"
+                class="nav-user-area-dropdown
+                overflow-hidden
+                flex flex-col justify-start align-start
+                absolute z-50 right-0
+                border border-gray-200
+                rounded-lg bg-white shadow-xl"
+                style="top: 120%; min-width: 100px;">
 
-                <p
-                   class="py-2 px-4 min-w-max pr-14
-                   text-gray-500 text-sm font-semibold
-                   py-1 mb-1 border-b border-gray-100
-                   transition duration-300 hover:bg-gray-100" style="">
-                    {{ vm.full_name }}
-                </p>
-                <a href="{{ url_for('auth.profile') }}"
-                   class="py-2 px-4 min-w-max pr-14
-                   text-gray-500 text-sm
-                   transition duration-300 hover:bg-gray-100" style="">
-                    Profile
-                </a>
-                <a href="{{ url_for('auth.logout') }}"
-                   id="btn-logout"
-                   class="py-2 px-4 min-w-max pr-14 not-ajax
-                   text-gray-500 text-sm
-                   transition duration-300 hover:bg-gray-100" style="">
-                    Sign out
-                </a>
-            </div>
+                <div class="menu-group">
+                    <a href="{{ url_for('auth.profile') }}"
+                       class="py-2 px-4 w-full pr-14
+                       text-gray-500 text-sm
+                       transition duration-300
+                       hover:bg-gray-100" style="">
+                        Profile
+                    </a>
+                    <a href="{{ url_for('auth.profile') }}"
+                       class="py-2 px-4 w-full pr-14
+                       text-gray-500 text-sm
+                       transition duration-300
+                       hover:bg-gray-100" style="">
+                        Profile
+                    </a>
+                    <a href="{{ url_for('auth.profile') }}"
+                       class="py-2 px-4 w-full pr-14
+                       text-gray-500 text-sm
+                       transition duration-300
+                       hover:bg-gray-100" style="">
+                        Profile
+                    </a>
+                </div>
+
+                <div class="menu-group pb-1">
+                    <a href="{{ url_for('auth.logout') }}"
+                       id="btn-logout"
+                       class="py-2 px-4 min-w-max pr-14 not-ajax
+                       text-gray-500 text-sm
+                       transition duration-300
+                       text-red-500
+                       font-semibold
+                       hover:bg-red-100
+                       " style="">
+                        Sign out
+                    </a>
+                </div> <!-- .menu-group -->
+            </div> <!-- .nav-user-area-dropdown -->
         </div>
 
         <style>
-            #nav-user-area:hover > div:last-child {
-                display: flex;
+            .menu-group:not(:last-of-type) {
+                border-bottom: 1px solid #eee;
+                padding: 5px 0;
+                /*font-weight: 500;*/
+            }
+            .menu-group a {
+                display: block;
+            }
+            .menu-group:not(:last-of-type) a:hover {
+                background-color: dodgerblue;
+                color: #fff;
             }
         </style>
 
