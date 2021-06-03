@@ -34,7 +34,7 @@ class User(UserMixin, db.Model):
 
     def get_id(self):
         """
-        Overriding the get_id to return email - that we used at the primary key
+        Overriding the get_id to return email - that we used at the primary key. Use for flask-login.
         """
         return self.email
 
