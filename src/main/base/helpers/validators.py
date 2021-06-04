@@ -1,4 +1,4 @@
-from wtforms.validators import InputRequired, Length, EqualTo, Regexp, ValidationError
+from wtforms.validators import Regexp, ValidationError
 import re
 
 
@@ -9,6 +9,11 @@ EmailValidator = Regexp(
 
 
 def PasswordValidator(form, field):
+    """
+    Base password validator for the application.
+    @param form:
+    @param field:
+    """
     if len(field.data) < 6 or len(field.data) > 50:
         raise ValidationError(message='The password must between 6 and 50 characters')
     else:

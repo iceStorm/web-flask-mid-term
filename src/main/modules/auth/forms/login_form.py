@@ -30,7 +30,7 @@ class LoginForm(FlaskForm):
 
     password = PasswordField(
         label='Password',
-        render_kw={'autocomplete': 'new-password'},
+        render_kw={'autocomplete': 'current-password'},
         validators=[
             InputRequired(message='Please fill out this field'),
             PasswordValidator,
@@ -43,7 +43,7 @@ class LoginForm(FlaskForm):
 
     # overriding the validate function
     def validate(self):
-        # first, validate the above requirements by passing this instance to the FlaskForm.validate()
+        # first, validate the above requirements by: passing this instance to the FlaskForm.validate()
         if not FlaskForm.validate(self):
             return False
 

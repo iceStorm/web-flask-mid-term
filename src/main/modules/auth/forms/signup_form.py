@@ -26,6 +26,9 @@ class SignUpForm(FlaskForm):
     full_name = StringField(
         label='Full name',
         render_kw={'autocomplete': 'name'},
+        filters=[
+            lambda string: str(string).strip() if string else '',   # discarding all redundant spaces
+        ],
         validators=[
             DataRequired(message='Please fill out this field'),
             Length(min=2, max=50, message='The length must between 2 and 50 letters'),

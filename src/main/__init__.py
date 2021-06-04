@@ -27,18 +27,12 @@ class App(Flask):
         """
         Registering base app's components via context_processor to get called each time a new request coming.
         """
+        # registering view components
         from .base.components.navbar.navbar_component import navbar_component
         self.context_processor(navbar_component)
 
-        def extract_avatar_url(full_avatar_url: str):
-            print(f'\nExtracting avatar url: {full_avatar_url}...')
-            try:
-                the_url = full_avatar_url.split('/static')[1]
-                print(f'Extracted the avatar url: {the_url}...')
-                return the_url
-            except Exception as ect:
-                print(f'Error to extract url [{full_avatar_url}]:', ect)
-                return 'default_user.jpg'
+        # registering jinja global functions (allow calling from any jinja templates)
+        from .base.helpers.jinja_env_functions import extract_avatar_url
         self.jinja_env.globals.update(extract_avatar_url=extract_avatar_url)
 
     def register_blueprints(self):
