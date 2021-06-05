@@ -71,8 +71,8 @@
         </header>
 
 
-        <main id="main" class="container relative flex flex-col flex-auto bg-white p-5">
-            {# the "flash.html" have to placed inside the #main, because only the #main (& #nav) appended from ajax calls. #}
+        <main id="main" class="container relative flex flex-col flex-auto bg-white p-7">
+            {# the "flash.html" have to placed inside the #main, because only the #main (& #nav) would be appended from ajax calls. #}
             {% include "flash.html" %}
 
             {% block content %} {% endblock %}
