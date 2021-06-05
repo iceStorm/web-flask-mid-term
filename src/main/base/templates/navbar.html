@@ -15,12 +15,12 @@
     <!-- the nav bar (drawer) -->
     <div
         id="mobile-drawer"
-        class="sm:hidden fixed left-0 bottom-0 right-0 h-screen z-10">
+        class="sm:hidden fixed left-0 h-screen z-10">
 
 
         <!-- the overlay background -->
         <div
-            x-show.transition.opacity="show"
+            x-show.transition.opacity.duration.1000="show"
             @click="close()"
             class="mobile-drawer-overlay fixed w-screen h-screen"
             style="background: rgba(0, 0, 0, 0.75); ">
