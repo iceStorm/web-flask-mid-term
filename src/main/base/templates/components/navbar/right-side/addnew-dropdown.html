@@ -1,4 +1,6 @@
 <div x-data="addNewDropdown()"
+    @click="open()"
+    data-tippy-content="Add new"
     class="nav-user-notification
     cursor-pointer relative
     rounded-full shadow-sm
@@ -12,11 +14,54 @@
     </svg>
 
     <!-- actual dropdown -->
-    <div x-show.transition.origin.top.right="isOpen()"
-        class="nav-user-notification-dropdown absolute">
+    <div x-show.transition.origin.top.right="isOpen()" @click.away="close()"
+        class="nav-user-area-dropdown addnew
+        flex flex-col justify-start align-start
+        absolute z-50 left-0
+        rounded-lg bg-white "
+        style="top: 180%; min-width: 100px;
+        box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.04) 0px 0px 0px 1px;">
 
-    </div>
+        <div class="menu-group py-1">
+            <a href="#"
+               class="py-2 px-4 min-w-max pr-14 not-ajax
+               text-gray-500 text-sm
+               transition duration-300">
+                Issue
+            </a>
+
+            <a href="#"
+               class="py-2 px-4 min-w-max pr-14 not-ajax
+               text-gray-500 text-sm
+               transition duration-300">
+                Project
+            </a>
+
+            <a href="#"
+               class="py-2 px-4 min-w-max pr-14 not-ajax
+               text-gray-500 text-sm
+               transition duration-300">
+                Organization
+            </a>
+        </div> <!-- .menu-group -->
+    </div> <!-- .nav-user-area-dropdown -->
 </div>
+
+
+<style>
+    .nav-user-area-dropdown.addnew::after,
+    .nav-user-area-dropdown.addnew::before {
+        right: unset;
+    }
+
+    .nav-user-area-dropdown.addnew::after {
+        left: 10px;
+    }
+    .nav-user-area-dropdown.addnew::before {
+        left: 11px;
+    }
+
+</style>
 
 
 <!-- alpinejs data -->

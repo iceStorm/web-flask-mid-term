@@ -89,6 +89,7 @@ function replaceContent(axiosResponse) {
 
 
     // re-set for new-in a tags
+    app.initTippy();
     setATagNavigate();
     setSubmit();
 }

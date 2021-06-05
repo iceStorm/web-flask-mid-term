@@ -14,6 +14,8 @@ class App {
         this.scrollTopButton = scrollTopButton;
 
         this.initNProgress();
+        this.initTippy();
+
         this.setAxiosResponseInterceptor();
 
         if (this.scrollTopButton?.visible) {
@@ -33,6 +35,10 @@ class App {
             trickleSpeed: 1750,
             showSpinner: false,
         });
+    }
+
+    initTippy() {
+        tippy('[data-tippy-content]');
     }
 
     initAxios() {

@@ -61,16 +61,16 @@ body {
 
 
 .container {
-    width: 1280px;
+    max-width: 1280px;
     margin: 0 auto;
 
     border: 1px solid #eee;
 }
-@media (max-width: 1279px) {
+/* @media (max-width: 1279px) {
     .container {
         width: 100vw;
     }
-}
+} */
 
 
 #main {
