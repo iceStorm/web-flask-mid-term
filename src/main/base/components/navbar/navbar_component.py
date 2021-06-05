@@ -21,8 +21,10 @@ def get_view_model() -> NavBarViewModel:
         user=current_user,
         full_name=full_name,
         nav_items=[
-            NavItem(href='/', title='Home', is_active=False),
-            NavItem(href='/projects', title='Projects', is_active=False),
+            NavItem(href='/', title='Home'),
+            NavItem(href='/projects', title='Projects'),
+            NavItem(href='/projects', title='Organizations'),
+            NavItem(href='/projects', title='Calendar'),
         ],
     )
 

@@ -4,7 +4,7 @@ class NavItem:
     title: str
     is_active: bool
 
-    def __init__(self, href: str, title: str, is_active: bool):
+    def __init__(self, href: str, title: str, is_active=False):
         self.href = href
         self.title = title
         self.is_active = is_active

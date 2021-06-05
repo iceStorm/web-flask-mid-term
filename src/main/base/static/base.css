@@ -61,12 +61,12 @@ body {
 
 
 .container {
-    width: 950px;
+    width: 1280px;
     margin: 0 auto;
 
     border: 1px solid #eee;
 }
-@media (max-width: 950px) {
+@media (max-width: 1279px) {
     .container {
         width: 100%;
     }

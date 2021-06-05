@@ -20,13 +20,13 @@
 <body>
     <div id="root">
         <header id="header" class="container flex-col justify-between bg-white">
-            <div id="header-bg" class="p-5 text-center flex justify-center items-end" style="gap: 15px;">
+            <a href="/" id="header-bg" class="p-5 text-center flex justify-center items-end" style="gap: 15px;">
                 <img src="../static/banner.png" class="inline-block" style="width: 55px">
-                <a href="/" class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-blue-400"
-                   style="font-size: 27px; font-family: Onelove;">Todo List App</a>
-            </div>
+                <span class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-blue-400"
+                   style="font-size: 27px; font-family: Onelove;">Todo List App</span>
+            </a>
 
-            <nav id="nav" class="px-7 py-2 sm:py-0 flex justify-between items-stretch"
+            <nav id="nav" class="px-7 py-3 sm:py-0 flex justify-between items-stretch"
                 style="border-top: 1px solid #eee; background: #fcfcfc;">
                 {# using the |safe filter to ensure the content returned from the function is safe, no need escaping #}
                 {{ navbar_component()|safe }}

@@ -1,7 +1,7 @@
 <!-- small-screen nav bar ( < 640px)-->
 <div 
     x-data="drawer()"
-    class="monile-menu sm:hidden flex items-center justify-center">
+    class="mobile-menu md:hidden flex items-center justify-center">
 
     <!-- drawer trigger -->
     <div @click="toggle()" class="hamburger-button flex flex-col items-center justify-center gap-1"
@@ -21,7 +21,7 @@
     <!-- the nav bar (drawer) -->
     <div
         id="mobile-drawer"
-        class="sm:hidden fixed left-0 h-screen z-10">
+        class="md:hidden fixed left-0 h-screen z-10">
 
 
         <!-- the overlay background -->
@@ -90,7 +90,7 @@
 
 
 <!-- wide-screen nav bar (640px < ) -->
-<div class="hidden nav-link-container sm:flex items-stretch">
+<div class="hidden nav-left-side md:flex items-stretch">
     {% for item in vm.nav_items %}
         <a
             href="{{ item.href }}"
@@ -98,7 +98,7 @@
             flex justify-center items-center
             font-semibold text-gray-300
             transition duration-300
-            hover:bg-gray-50
+            hover:bg-gray-100
             hover:text-black
             {%- if item.is_active %}
                 active border-b-2 border-blue-400 text-blue-500
@@ -111,7 +111,7 @@
 
 
 <!-- right area (user dropdown, ...) -->
-<div class="nav-link-user-area flex justify-between items-center gap-7">
+<div class="nav-right-side flex justify-between items-center gap-10">
     {% if not vm.user.is_authenticated %}
         <a href="{{ url_for('auth.login') }}"
            style="{% if url_for(request.endpoint) == '/login' %}display: none; {% endif %}"
@@ -131,18 +131,73 @@
             Create account
         </a>
     {% else %}
-        <div id="nav-user-area"
-             class="relative"
-             x-data="{ open: false }">
 
+        <!-- notification area -->
+        <div x-data="notificationDropdown()"
+            class="nav-user-notification
+            cursor-pointer
+            relative 
+            rounded-full
+            shadow-sm
+            border border-gray-200
+            flex justify-center items-center
+            bg-white p-1">
+
+            <!-- the bell icon | dropdown trigger -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
+
+            <!-- counter -->
+            <span class="nav-user-notification-count
+                        flex justify-center items-center
+                        absolute w-3 h-3 rounded-full p-0.5
+                        border-2 border-white
+                        text-white text-xs bg-red-500"
+                        style="bottom: 15px; left: 15px;"></span>
+
+            <!-- actual dropdown -->
+            <div class="nav-user-notification-dropdown absolute">
+
+            </div>
+
+            <!-- alpinejs data -->
+            <script>
+                function notificationDropdown() {
+                    return {
+                        _show: false,
+    
+                        isOpen() {
+                            return this._show === true;
+                        },
+                        open() {
+                            this._show = true;
+                        },
+                        close() {
+                            this._show = false;
+                        },
+                        toggle() {
+                            this._show == !this._show;
+                        }
+                    };
+                }
+            </script>
+        </div>
+
+
+        <!-- user dropdown menu area -->
+        <div id="nav-user-area" class="relative" x-data="userDropdown()">
+
+            <!-- user dropdown menu trigger -->
             <div class="nav-user-area-avatar">
-                <button @click="open = true"
+                <button @click="open()"
                         class="
+                        bg-white
                         flex justify-end items-center
-                        rounded-full
-                        ring-2 ring-offset-2 ring-blue-500
+                        rounded-full shadow-sm
+                        border border-gray-200
                         focus:outline-none">
-                    <p class="px-4
+                    <p class=" px-4
                        text-gray-500 text-sm font-semibold
                        transition duration-300" style="">
                         {{ vm.full_name }}
@@ -153,14 +208,14 @@
                 </button>
             </div>
 
-            <div x-show.transition.origin.top.right="open" @click.away="open = false"
+            <!-- user dropdown actual menu -->
+            <div x-show.transition.origin.top.right="isOpen()" @click.away="close()"
                 class="nav-user-area-dropdown
-                overflow-hidden
                 flex flex-col justify-start align-start
                 absolute z-50 right-0
-                border border-gray-200
-                rounded-lg bg-white shadow-xl"
-                style="top: 120%; min-width: 100px;">
+                rounded-lg bg-white "
+                style="top: 180%; min-width: 100px;
+                box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.04) 0px 0px 0px 1px;">
 
                 <div class="menu-group">
                     <a href="{{ url_for('auth.profile') }}"
@@ -168,21 +223,34 @@
                        text-gray-500 text-sm
                        transition duration-300
                        hover:bg-gray-100" style="">
-                        Profile
+                        View profile
                     </a>
+                </div>
+
+                <div class="menu-group">
                     <a href="{{ url_for('auth.profile') }}"
                        class="py-2 px-4 w-full pr-14
                        text-gray-500 text-sm
                        transition duration-300
                        hover:bg-gray-100" style="">
-                        Profile
+                        Projects
                     </a>
+                    <a href="{{ url_for('auth.profile') }}"
+                    class="py-2 px-4 w-full pr-14
+                    text-gray-500 text-sm
+                    transition duration-300
+                    hover:bg-gray-100" style="">
+                     Organizations
+                 </a>
+                </div>
+
+                <div class="menu-group">
                     <a href="{{ url_for('auth.profile') }}"
                        class="py-2 px-4 w-full pr-14
                        text-gray-500 text-sm
                        transition duration-300
                        hover:bg-gray-100" style="">
-                        Profile
+                        Settings
                     </a>
                 </div>
 
@@ -203,21 +271,64 @@
         </div>
 
         <style>
+            .nav-user-area-dropdown::after,
+            .nav-user-area-dropdown::before {
+                content: "";
+
+                position: absolute;
+                top: -7px;
+                right: 15px;
+
+                border-bottom: 7px solid #fff;
+                border-left: 7px solid transparent;
+                border-right: 7px solid transparent;
+            }
+            .nav-user-area-dropdown::after {
+                z-index: -1;
+                top: -8.1px;
+                right: 14px;
+
+                border-bottom: 8px solid rgba(0, 0, 0, 0.1);
+                border-left: 8px solid transparent;
+                border-right: 8px solid transparent;
+            }
+
             .menu-group:not(:last-of-type) {
                 border-bottom: 1px solid #eee;
                 padding: 5px 0;
                 /*font-weight: 500;*/
             }
+
             .menu-group a {
                 display: block;
+                margin: 0;
             }
-            .menu-group:not(:last-of-type) a:hover {
-                background-color: dodgerblue;
-                color: #fff;
+            .menu-group a:hover {
+                background-color: #eee;
+                color: rgb(56, 56, 56);
             }
         </style>
 
         <script>
+            function userDropdown() {
+                return {
+                    _show: false,
+
+                    isOpen() {
+                        return this._show === true;
+                    },
+                    open() {
+                        this._show = true;
+                    },
+                    close() {
+                        this._show = false;
+                    },
+                    toggle() {
+                        this._show == !this._show;
+                    }
+                };
+            }
+
             $('#btn-logout').click(function (e) {
                 e.preventDefault();
 

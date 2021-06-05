@@ -31,6 +31,7 @@ class App {
             speed: 450,
             trickleRate: 0.02,
             trickleSpeed: 1750,
+            showSpinner: false,
         });
     }
 
