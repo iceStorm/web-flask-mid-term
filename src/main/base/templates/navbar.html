@@ -1,26 +1,26 @@
 <!-- small-screen nav bar ( < 640px)-->
 <div 
-    x-data="{ open: false }"
+    x-data="drawer()"
     class="monile-menu sm:hidden flex items-center justify-center">
 
     <!-- drawer trigger -->
-    <div @click="open = !open"
-        class="hamburger-button flex flex-col items-center justify-center gap-1.5">
-        <span class="w-7 h-1 bg-gray-400 cursor-pointer rounded-md"></span>
-        <span class="w-7 h-1 bg-gray-400 cursor-pointer rounded-md"></span>
-        <span class="w-7 h-1 bg-gray-400 cursor-pointer rounded-md"></span>
+    <div @click="toggle()"
+        class="hamburger-button flex flex-col items-center justify-center gap-1">
+        <span class="w-6 h-1 bg-gray-400 cursor-pointer rounded-md"></span>
+        <span class="w-6 h-1 bg-gray-400 cursor-pointer rounded-md"></span>
+        <span class="w-6 h-1 bg-gray-400 cursor-pointer rounded-md"></span>
     </div>
-    
+
 
     <!-- the nav bar (drawer) -->
-    <div x-show.transition="open"
-        @click="open = false"
-        class="sm:hidden
-        fixed left-0 bottom-0 right-0 h-full z-10"
-        style="width: 50wh; top: 85px; background: rgba(0, 0, 0, 0.75);">
+    <div x-show.transition="isOpen()"
+        @click="close()"
+        id="mobile-drawer"
+        class="sm:hidden fixed left-0 bottom-0 right-0 h-screen z-10"
+        style="background: rgba(0, 0, 0, 0.75);">
 
         <!-- actual menu -->
-        <ul class="flex flex-col pt-7 items-stretch w-2/3 bg-white h-full">
+        <ul class="flex flex-col pt-2 items-stretch w-2/3 bg-white h-full">
         {% for item in vm.nav_items %}
             <li>
                 <a
@@ -41,7 +41,30 @@
         {% endfor %}
         </ul>
     </div>
+
+    <script>
+        function drawer() {
+            return {
+                show: false,
+    
+                isOpen() {
+                    return this.show === true;
+                },
+    
+                open() {
+                    this.show = true;
+                },
+                close() {
+                    this.show = false;
+                },
+                toggle() {
+                    this.show = !this.show;
+                },
+            }
+        }
+    </script>
 </div>
+
 
 
 
@@ -103,7 +126,9 @@
                        transition duration-300" style="">
                         {{ vm.full_name }}
                     </p>
-                    <img src="{{ url_for('static', filename=extract_avatar_url(vm.user.avatar_url)) }}" class="h-8 w-8 rounded-full">
+                    <img
+                        src="{{ url_for('static', filename=extract_avatar_url(vm.user.avatar_url)) }}"
+                        class="h-8 w-8 rounded-full object-cover">
                 </button>
             </div>
 
