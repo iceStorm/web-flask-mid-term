@@ -13,32 +13,46 @@
 
 
     <!-- the nav bar (drawer) -->
-    <div x-show.transition="isOpen()"
-        @click="close()"
+    <div
         id="mobile-drawer"
-        class="sm:hidden fixed left-0 bottom-0 right-0 h-screen z-10"
-        style="background: rgba(0, 0, 0, 0.75);">
+        class="sm:hidden fixed left-0 bottom-0 right-0 h-screen z-10">
 
+
+        <!-- the overlay background -->
+        <div
+            x-show.transition.opacity="show"
+            @click="close()"
+            class="mobile-drawer-overlay fixed w-screen h-screen"
+            style="background: rgba(0, 0, 0, 0.75); ">
+        </div>
+
+        
         <!-- actual menu -->
-        <ul class="flex flex-col pt-2 items-stretch w-2/3 bg-white h-full">
-        {% for item in vm.nav_items %}
-            <li>
-                <a
-                href="{{ item.href }}"
-                class="px-3 py-3 pl-7 ajax
-                    text-left
-                    flex justify-start items-center
-                    font-semibold text-gray-300
-                    transition duration-300
-                    hover:bg-gray-50
-                    hover:text-black
-                    {%- if item.is_active -%}
-                        active text-blue-500
-                    {%- endif -%}">
-                {{ item.title }}
-                </a>
-            </li>
-        {% endfor %}
+        <ul :style="`left: ${show ? '0' : '-500px'};`"
+            class="fixed transition-all duration-500
+                flex flex-col items-stretch w-2/3
+                pt-2 bg-white h-full
+                border-r-2 border-gray-300" >
+
+            <!-- rendering the content (would be performed by the jinja engine) -->
+            {% for item in vm.nav_items %}
+                <li>
+                    <a
+                    href="{{ item.href }}"
+                    class="px-3 py-3 pl-7 ajax
+                        text-left
+                        flex justify-start items-center
+                        font-semibold text-gray-300
+                        transition duration-300
+                        hover:bg-gray-50
+                        hover:text-black
+                        {%- if item.is_active -%}
+                            active text-blue-500
+                        {%- endif -%}">
+                    {{ item.title }}
+                    </a>
+                </li>
+            {% endfor %}
         </ul>
     </div>
 
