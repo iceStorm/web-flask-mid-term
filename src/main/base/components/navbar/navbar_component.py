@@ -40,6 +40,6 @@ def navbar_component():
 
         # setting the current active page
         vm.set_active_nav_item(path=req_path)
-        return render_template("navbar.html", vm=vm)
+        return render_template("components/navbar/navbar.html", vm=vm)
 
     return dict(navbar_component=component)

@@ -1,0 +1,153 @@
+<div id="nav-user-area" class="relative" x-data="userDropdown()">
+
+    <!-- user dropdown menu trigger -->
+    <div class="nav-user-area-avatar">
+        <button @click="open()"
+                class="
+                bg-white
+                flex justify-end items-center
+                rounded-full shadow-sm
+                border border-gray-200
+                focus:outline-none">
+            <p class=" px-4
+               text-gray-500 text-sm font-semibold
+               transition duration-300" style="">
+                {{ vm.full_name }}
+            </p>
+            <img
+                src="{{ url_for('static', filename=extract_avatar_url(vm.user.avatar_url)) }}"
+                class="h-8 w-8 rounded-full object-cover">
+        </button>
+    </div>
+
+    <!-- user dropdown actual menu -->
+    <div x-show.transition.origin.top.right="isOpen()" @click.away="close()"
+        class="nav-user-area-dropdown
+        flex flex-col justify-start align-start
+        absolute z-50 right-0
+        rounded-lg bg-white "
+        style="top: 180%; min-width: 100px;
+        box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.04) 0px 0px 0px 1px;">
+
+        <div class="menu-group">
+            <a href="{{ url_for('auth.profile') }}"
+               class="py-2 px-4 w-full pr-14
+               text-gray-500 text-sm
+               transition duration-300
+               hover:bg-gray-100" style="">
+                View profile
+            </a>
+        </div>
+
+        <div class="menu-group">
+            <a href="{{ url_for('auth.profile') }}"
+               class="py-2 px-4 w-full pr-14
+               text-gray-500 text-sm
+               transition duration-300
+               hover:bg-gray-100" style="">
+                Projects
+            </a>
+            <a href="{{ url_for('auth.profile') }}"
+            class="py-2 px-4 w-full pr-14
+            text-gray-500 text-sm
+            transition duration-300
+            hover:bg-gray-100" style="">
+             Organizations
+         </a>
+        </div>
+
+        <div class="menu-group">
+            <a href="{{ url_for('auth.profile') }}"
+               class="py-2 px-4 w-full pr-14
+               text-gray-500 text-sm
+               transition duration-300
+               hover:bg-gray-100" style="">
+                Settings
+            </a>
+        </div>
+
+        <div class="menu-group pb-1">
+            <a href="{{ url_for('auth.logout') }}"
+               id="btn-logout"
+               class="py-2 px-4 min-w-max pr-14 not-ajax
+               text-gray-500 text-sm
+               transition duration-300
+               text-red-500
+               font-semibold
+               hover:bg-red-100
+               " style="">
+                Sign out
+            </a>
+        </div> <!-- .menu-group -->
+    </div> <!-- .nav-user-area-dropdown -->
+</div>
+
+
+<style>
+    .nav-user-area-dropdown::after,
+    .nav-user-area-dropdown::before {
+        content: "";
+
+        position: absolute;
+        top: -7px;
+        right: 15px;
+
+        border-bottom: 7px solid #fff;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+    }
+    .nav-user-area-dropdown::after {
+        z-index: -1;
+        top: -8.1px;
+        right: 14px;
+
+        border-bottom: 8px solid rgba(0, 0, 0, 0.1);
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+    }
+
+    .menu-group:not(:last-of-type) {
+        border-bottom: 1px solid #eee;
+        padding: 5px 0;
+        /*font-weight: 500;*/
+    }
+
+    .menu-group a {
+        display: block;
+        margin: 0;
+    }
+    .menu-group a:hover {
+        background-color: #eee;
+        color: rgb(56, 56, 56);
+    }
+</style>
+
+
+<script>
+    function userDropdown() {
+        return {
+            _show: false,
+
+            isOpen() {
+                return this._show === true;
+            },
+            open() {
+                this._show = true;
+            },
+            close() {
+                this._show = false;
+            },
+            toggle() {
+                this._show == !this._show;
+            }
+        };
+    }
+
+    $('#btn-logout').click(function (e) {
+        e.preventDefault();
+
+        $.confirm('Are you sure you want to logout ?', () => {
+            navigateTo('/logout');
+        });
+    });
+</script>

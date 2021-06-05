@@ -3,7 +3,7 @@
 #
 
 
-APP_NAME = "Todo-List App"
+APP_NAME = "Flask Todo"
 
 SECRET_KEY = "iceStorm"
 
