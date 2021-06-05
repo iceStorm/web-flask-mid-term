@@ -28,10 +28,10 @@
 
         
         <!-- actual menu -->
-        <ul :style="`left: ${show ? '0' : '-500px'};`"
+        <ul :style="`left: ${isOpen() ? '0' : '-500px'};`"
             class="fixed transition-all duration-500
                 flex flex-col items-stretch w-2/3
-                pt-2 bg-white h-full
+                pt-2 bg-white h-screen
                 border-r-2 border-gray-300" >
 
             <!-- rendering the content (would be performed by the jinja engine) -->
