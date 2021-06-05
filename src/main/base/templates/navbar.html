@@ -4,11 +4,17 @@
     class="monile-menu sm:hidden flex items-center justify-center">
 
     <!-- drawer trigger -->
-    <div @click="toggle()"
-        class="hamburger-button flex flex-col items-center justify-center gap-1">
-        <span class="w-6 h-1 bg-gray-400 cursor-pointer rounded-md"></span>
-        <span class="w-6 h-1 bg-gray-400 cursor-pointer rounded-md"></span>
-        <span class="w-6 h-1 bg-gray-400 cursor-pointer rounded-md"></span>
+    <div @click="toggle()" class="hamburger-button flex flex-col items-center justify-center gap-1"
+        :style="`transform: ${isOpen() ? 'translatex(-12px)': ''}`">
+        <span class="w-6 h-1 bg-gray-400 cursor-pointer rounded-md transition duration 700"
+              :style="`transform: ${isOpen() ? 'rotate(45deg) translate(12px, 0px)': ''}`"></span>
+
+        <span class="w-6 h-1 bg-gray-400 cursor-pointer rounded-md transition duration 700"
+              :style="`opacity:  ${isOpen() ? '0' : ''}`"></span>
+
+        <span class="w-6 h-1 bg-gray-400 cursor-pointer rounded-md transition duration 700"
+              :style="`transform: ${isOpen() ? 'rotate(-45deg) translate(12px, 0px)': ''}`"></span>
+
     </div>
 
 
@@ -20,7 +26,7 @@
 
         <!-- the overlay background -->
         <div
-            x-show.transition.opacity.duration.1000="show"
+            x-show.transition.opacity.duration.1000="isOpen()"
             @click="close()"
             class="mobile-drawer-overlay fixed w-screen h-screen"
             style="background: rgba(0, 0, 0, 0.75); ">
@@ -56,23 +62,24 @@
         </ul>
     </div>
 
+    <!-- alpinejs data declaration -->
     <script>
         function drawer() {
             return {
-                show: false,
+                _show: false,
     
                 isOpen() {
-                    return this.show === true;
+                    return this._show === true;
                 },
     
                 open() {
-                    this.show = true;
+                    this._show = true;
                 },
                 close() {
-                    this.show = false;
+                    this._show = false;
                 },
                 toggle() {
-                    this.show = !this.show;
+                    this._show = !this._show;
                 },
             }
         }
