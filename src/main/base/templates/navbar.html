@@ -1,4 +1,52 @@
-<div class="nav-link-container flex items-stretch">
+<!-- small-screen nav bar ( < 640px)-->
+<div 
+    x-data="{ open: false }"
+    class="monile-menu sm:hidden flex items-center justify-center">
+
+    <!-- drawer trigger -->
+    <div @click="open = !open"
+        class="hamburger-button flex flex-col items-center justify-center gap-1.5">
+        <span class="w-7 h-1 bg-gray-400 cursor-pointer rounded-md"></span>
+        <span class="w-7 h-1 bg-gray-400 cursor-pointer rounded-md"></span>
+        <span class="w-7 h-1 bg-gray-400 cursor-pointer rounded-md"></span>
+    </div>
+    
+
+    <!-- the nav bar (drawer) -->
+    <div x-show.transition="open"
+        @click="open = false"
+        class="sm:hidden
+        fixed left-0 bottom-0 right-0 h-full z-10"
+        style="width: 50wh; top: 85px; background: rgba(0, 0, 0, 0.75);">
+
+        <!-- actual menu -->
+        <ul class="flex flex-col pt-7 items-stretch w-2/3 bg-white h-full">
+        {% for item in vm.nav_items %}
+            <li>
+                <a
+                href="{{ item.href }}"
+                class="px-3 py-3 pl-7 ajax
+                    text-left
+                    flex justify-start items-center
+                    font-semibold text-gray-300
+                    transition duration-300
+                    hover:bg-gray-50
+                    hover:text-black
+                    {%- if item.is_active -%}
+                        active text-blue-500
+                    {%- endif -%}">
+                {{ item.title }}
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+
+
+
+<!-- wide-screen nav bar (640px < ) -->
+<div class="hidden nav-link-container sm:flex items-stretch">
     {% for item in vm.nav_items %}
         <a
             href="{{ item.href }}"
@@ -16,6 +64,9 @@
     {% endfor %}
 </div>
 
+
+
+<!-- right area (user dropdown, ...) -->
 <div class="nav-link-user-area flex justify-between items-center gap-7">
     {% if not vm.user.is_authenticated %}
         <a href="{{ url_for('auth.login') }}"

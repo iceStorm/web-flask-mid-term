@@ -1,69 +1,11 @@
-const BACKEND_ENDPOINT = '/';
-
-// setting the baseURL for backend API calls
-axios.defaults.baseURL = BACKEND_ENDPOINT;
-axios.defaults.withCredentials = true
-
-//  intercepting response to handle errors from server
-axios.interceptors.response.use(
-res => {
-    return res;
-},
-err => {
-    console.log('axios error response:', err.response.status);
-    switch (err.response.status) {
-        case 401: {
-            $.message({
-                type: 'error',
-                text: 'Not authenticated. Please login first!',
-                position: 'bottom-center',
-            });
-
-            break;
-        }
-
-        case 403: {
-            $.message({
-                type: 'error',
-                text: 'Forbidden, please return!',
-                position: 'bottom-center',
-            });
-
-            break;
-        }
-
-        case 404: {
-            $.message({
-                type: 'error',
-                text: 'Resource not found!',
-                position: 'bottom-center',
-            });
-
-            break;
-        }
-
-        case 405: {
-            $.message({
-                type: 'error',
-                text: 'Request method not allowed! [GET, POST...]',
-                position: 'bottom-center',
-            });
-
-            break;
-        }
-
-        case 500: {
-            $.message({
-                type: 'error',
-                text: 'Server confusing to handle!',
-                position: 'bottom-center',
-            });
-
-            break;
-        }
+/**
+ * Initializing the App. Also run initial configs.
+ */
+const app = new App({
+    backendEndpoint: '/',
+    scrollTopButton: {
+        visible: false,
     }
-
-    return Promise.reject(err);
 });
 
 
@@ -81,16 +23,6 @@ function showToast(text, type, duration=5000) {
         position: 'bottom-center',
     });
 }
-
-
-/**
-  * Initializing the progressbar.
-  */
-loadProgressBar({
-    speed: 450,
-    trickleRate: 0.02,
-    trickleSpeed: 1750,
-});
 
 
 /*
