@@ -1,6 +1,9 @@
 # IDE
 .idea/
 
+# npm
+node_modules
+
 # virtual environment
 #.venv/
 #venv/
