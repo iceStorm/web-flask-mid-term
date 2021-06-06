@@ -1,7 +1,7 @@
 from flask import request, render_template
 from flask_login import current_user
 
-from .navbar_viewmodel import NavBarViewModel, NavItem
+from .navbar_viewmodel import NavBarViewModel, NavItem, NavItemIcon
 
 # import this model to handle the DB (Flask-SQLAlchemy)
 from src.main.modules.user.user_model import User
@@ -21,10 +21,10 @@ def get_view_model() -> NavBarViewModel:
         user=current_user,
         full_name=full_name,
         nav_items=[
-            NavItem(href='/', title='Home'),
-            NavItem(href='/projects', title='Projects'),
-            NavItem(href='/projects', title='Organizations'),
-            NavItem(href='/projects', title='Calendar'),
+            NavItem(href='/', title='Home', icon=NavItemIcon(original='icons/outline/grid-outline.svg')),
+            NavItem(href='/projects', title='Projects', icon=NavItemIcon(original='icons/outline/file-tray-stacked-outline.svg')),
+            NavItem(href='/projects', title='Organizations', icon=NavItemIcon(original='icons/outline/business-outline.svg')),
+            NavItem(href='/projects', title='Calendar', icon=NavItemIcon(original='icons/outline/calendar-outline.svg')),
         ],
     )
 
