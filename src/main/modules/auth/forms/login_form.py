@@ -21,7 +21,9 @@ class LoginForm(FlaskForm):
     email = EmailField(
         label='Email',
         description={
-            'icon': 'icons/outline/finger-print-outline.svg',
+            'icon': {
+                'origin': 'icons/outline/finger-print-outline.svg',
+            },
         },
         render_kw={
             'autocomplete': 'email',
@@ -37,8 +39,10 @@ class LoginForm(FlaskForm):
         label='Password',
         render_kw={'autocomplete': 'current-password'},
         description={
-            'icon': 'icons/outline/lock-closed-outline.svg',
-            'alternate-icon': 'icons/outline/lock-open-outline.svg',
+            'icon': {
+                'origin': 'icons/outline/lock-closed-outline.svg',
+                'alternate': 'icons/outline/lock-open-outline.svg',
+            },
         },
         validators=[
             InputRequired(message='Please fill out this field'),

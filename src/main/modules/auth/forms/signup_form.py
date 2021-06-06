@@ -17,7 +17,9 @@ class SignUpForm(FlaskForm):
         label='Email',
         render_kw={'autocomplete': 'email'},
         description={
-            'icon': 'icons/outline/finger-print-outline.svg',
+            'icon': {
+                'origin': 'icons/outline/finger-print-outline.svg',
+            },
         },
         validators=[
             InputRequired(),
@@ -30,7 +32,9 @@ class SignUpForm(FlaskForm):
         label='Full name',
         render_kw={'autocomplete': 'name'},
         description={
-            'icon': 'icons/outline/scan-outline.svg',
+            'icon': {
+                'origin': 'icons/outline/scan-outline.svg',
+            },
         },
         filters=[
             lambda string: str(string).strip() if string else '',   # discarding all redundant spaces
@@ -45,8 +49,10 @@ class SignUpForm(FlaskForm):
         label='Password',
         render_kw={'autocomplete': 'new-password'},
         description={
-            'icon': 'icons/outline/lock-closed-outline.svg',
-            'alternate-icon': 'icons/outline/lock-open-outline.svg',
+            'icon': {
+                'origin': 'icons/outline/lock-closed-outline.svg',
+                'alternate': 'icons/outline/lock-open-outline.svg',
+            },
         },
         validators=[
             InputRequired(message='Please fill out this field'),
@@ -58,8 +64,10 @@ class SignUpForm(FlaskForm):
         label='Re-enter password',
         render_kw={'autocomplete': 'new-password'},
         description={
-            'icon': 'icons/outline/lock-closed-outline.svg',
-            'alternate-icon': 'icons/outline/lock-open-outline.svg',
+            'icon': {
+                'origin': 'icons/outline/lock-closed-outline.svg',
+                'alternate': 'icons/outline/lock-open-outline.svg',
+            },
         },
         validators=[
             InputRequired(message='Please fill out this field'),

@@ -25,10 +25,10 @@
                             text-gray-400 h-8 w-8"
                     style="top: 1.85px; left: 1.75px; padding: 0.39rem">
                     <!-- icon -->
-                    <img src="{{ url_for('static', filename=field.description.icon) }}"
+                    <img src="{{ url_for('static', filename=field.description.icon.get('origin', '')) }}"
                         style="filter: invert(0.5);"
-                        data-original-icon="{{ url_for('static', filename=field.description.icon) }}"
-                        data-alternate-icon="{{ url_for('static', filename=field.description.get('alternate-icon', '')) }}">
+                        data-original-icon="{{ url_for('static', filename=field.description.icon.get('origin', '')) }}"
+                        data-alternate-icon="{{ url_for('static', filename=field.description.icon.get('alternate', '')) }}">
                 </div>
 
                 <!-- the field -->
