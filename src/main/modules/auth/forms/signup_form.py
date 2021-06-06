@@ -16,6 +16,9 @@ class SignUpForm(FlaskForm):
     email = EmailField(
         label='Email',
         render_kw={'autocomplete': 'email'},
+        description={
+            'icon': 'icons/outline/finger-print-outline.svg',
+        },
         validators=[
             InputRequired(),
             EmailValidator,
@@ -26,6 +29,9 @@ class SignUpForm(FlaskForm):
     full_name = StringField(
         label='Full name',
         render_kw={'autocomplete': 'name'},
+        description={
+            'icon': 'icons/outline/scan-outline.svg',
+        },
         filters=[
             lambda string: str(string).strip() if string else '',   # discarding all redundant spaces
         ],
@@ -38,6 +44,10 @@ class SignUpForm(FlaskForm):
     password = PasswordField(
         label='Password',
         render_kw={'autocomplete': 'new-password'},
+        description={
+            'icon': 'icons/outline/lock-closed-outline.svg',
+            'alternate-icon': 'icons/outline/lock-open-outline.svg',
+        },
         validators=[
             InputRequired(message='Please fill out this field'),
             PasswordValidator,
@@ -47,6 +57,10 @@ class SignUpForm(FlaskForm):
     re_password = PasswordField(
         label='Re-enter password',
         render_kw={'autocomplete': 'new-password'},
+        description={
+            'icon': 'icons/outline/lock-closed-outline.svg',
+            'alternate-icon': 'icons/outline/lock-open-outline.svg',
+        },
         validators=[
             InputRequired(message='Please fill out this field'),
             PasswordValidator,
