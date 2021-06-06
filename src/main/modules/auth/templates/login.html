@@ -5,32 +5,45 @@
     {{ center_main() }}
 
     <form action="" method="post"
+        x-data="loginForm()"
         id="login-form"
         class="py-5 px-9 rounded-md ajax"
-        style="min-width: 300px; box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;">
+        style="min-width: 350px; box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;">
+
+
         {{ form.csrf_token }}
+
 
         {% for field in form if field.name != 'csrf_token' and field.name != 'remember' %}
             <div class="form-field py-2">
+
+                <!-- form-field-label -->
                 <div class="form-field-label pb-0.5 text-gray-700">{{ field.label(class="text-sm font-medium") }}</div>
 
-                <div class="form-field-field relative flex">
-                    {{ field(
-                    class_="
-                    transition
-                    duration-300
-                    w-full
-                    border-2
-                    border-gray-150
-                    rounded-md
-                    py-1 px-2
-                    hover:bg-gray-100
-                    focus:outline-none
-                    focus:border-blue-400
-                    focus:bg-white
-                    ") }}
+                <!-- .form-field-container -->
+                <div class="form-field-container relative" data-name="{{ field.name }}">
+                    <div class="form-field-prefix absolute rounded-l flex justify-center items-center text-gray-400"
+                        style="top: 1.85px; left: 1.75px; padding: 0.39rem">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M14.243 5.757a6 6 0 10-.986 9.284 1 1 0 111.087 1.678A8 8 0 1118 10a3 3 0 01-4.8 2.401A4 4 0 1114 10a1 1 0 102 0c0-1.537-.586-3.07-1.757-4.243zM12 10a2 2 0 10-4 0 2 2 0 004 0z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    {{
+                        field(
+                            class_="
+                            bg-transparent rounded-md
+                            transition duration-300
+                            w-full py-1 px-2 pl-8
+                            border-2 border-gray-150
+                            hover:bg-gray-100
+                            focus:outline-none
+                            focus:border-blue-400
+                            focus:bg-white"
+                        )
+                    }}
                 </div>
 
+                <!-- .form-field-errors-container -->
                 <div class="form-field-errors-container">
                     {% if field.errors %}
                         <script>
@@ -42,7 +55,7 @@
                         {% endfor %}
                     {% endif %}
                 </div>
-            </div>
+            </div> <!-- .form-field -->
         {% endfor %}
 
         <div class="form-field py-2 mt-3 flex justify-between items-center gap-2">
@@ -60,19 +73,65 @@
             </div>
         </div>
 
-        <input type="submit" value="Login"
+        <button type="submit"
                class="
-               block mx-auto mt-9 px-9 py-2
-               shadow-md cursor-pointer
-               rounded-full bg-blue-400
-               text-white font-medium
+               flex justify-between items-center
+               relative overflow-hidden cursor-pointer
+               mx-auto mt-9 w-full
+               rounded-md bg-gray-200
+               text-gray-700 font-medium
                transition-all duration-300
                focus:outline-none
-               focus:ring-2
-               focus:ring-offset-2
-               focus:ring-blue-400
-               hover:bg-blue-500">
+               focus:ring-2 focus:ring-offset-2 focus:ring-blue-400
+               hover:bg-gray-300">
+
+            <span class="flex-auto">Login</span>
+            <span class="h-full p-2 bg-blue-500 text-white flex justify-center items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </span>
+        </button>
     </form>
+
+    <!--  alpinejs data  -->
+    <script>
+      $('#login-form .form-field .form-field-container[data-name*="email"] .form-field-prefix').html(`
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
+        </svg>`);
+
+      passwordFieldsQuery = '#login-form .form-field .form-field-container[data-name*="password"] .form-field-prefix';
+      passwordFields = $(passwordFieldsQuery);
+      $(passwordFields).addClass('cursor-pointer');
+
+      lockSvg = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>`;
+      unLockSvg = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+          </svg>`;
+
+
+      $(passwordFields).html(lockSvg);
+
+
+      $(passwordFields).each(function(index, elem) {
+          $(this).click(function(e) {
+              const theInput = $(this).next();
+  
+              if ($(theInput).attr('type') == 'text') {
+                  $(theInput).attr('type', 'password');
+                  $(this).html(lockSvg);
+              } else {
+                  $(theInput).attr('type', 'text');
+                  $(this).html(unLockSvg);
+              }
+          });
+      });
+    </script>
 
     <style>
         :root {
@@ -98,7 +157,6 @@
         .switch-title {
           user-select: none;
           color: black;
-          font-family: 'Roboto';
         }
 
         .switch-delegate  {
