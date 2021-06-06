@@ -49,19 +49,39 @@ class App {
         this.setAxiosResponseInterceptor();
     }
 
+    setupScrollTopButton() {
+        console.log(this.scrollTopButton);
+    }
+
     setAxiosResponseInterceptor() {
-        //  intercepting response to handle errors from the server or even on the client.
+        //  intercepting response to handle errors from the server or even on the client (network error..).
         axios.interceptors.response.use(
             res => {
                 return res;
             },
             err => {
                 console.log('axios error response:', err.response.status);
+                console.log('error data:', err.response);
+
+
+                // getting error message from the server
+                const theErrorMessage = err.response?.data?.message;
+
                 switch (err.response.status) {
+                    case 400: {
+                        $.message({
+                            type: 'error',
+                            text: theErrorMessage ?? 'Bad request! Please check your request data.',
+                            position: 'bottom-center',
+                        });
+            
+                        break;
+                    }
+
                     case 401: {
                         $.message({
                             type: 'error',
-                            text: 'Not authenticated. Please login first!',
+                            text: theErrorMessage ?? 'Not authenticated. Please login first!',
                             position: 'bottom-center',
                         });
             
@@ -71,7 +91,7 @@ class App {
                     case 403: {
                         $.message({
                             type: 'error',
-                            text: 'Forbidden, please return!',
+                            text: theErrorMessage ?? 'Forbidden, please return!',
                             position: 'bottom-center',
                         });
             
@@ -81,7 +101,7 @@ class App {
                     case 404: {
                         $.message({
                             type: 'error',
-                            text: 'Resource not found!',
+                            text: theErrorMessage ?? 'Resource not found!',
                             position: 'bottom-center',
                         });
             
@@ -91,7 +111,7 @@ class App {
                     case 405: {
                         $.message({
                             type: 'error',
-                            text: 'Request method not allowed! [GET, POST...]',
+                            text: theErrorMessage ?? 'Request method not allowed! [GET, POST...]',
                             position: 'bottom-center',
                         });
             
@@ -101,7 +121,7 @@ class App {
                     case 500: {
                         $.message({
                             type: 'error',
-                            text: 'Server confusing to handle!',
+                            text: theErrorMessage ?? 'Server confusing to handle!',
                             position: 'bottom-center',
                         });
             
@@ -111,7 +131,7 @@ class App {
                     default: {
                         $.message({
                             type: 'error',
-                            text: 'Unhanled error! Please check the DevTools Console.',
+                            text: theErrorMessage ?? 'Unhanled error! Please check the DevTools Console.',
                             position: 'bottom-center',
                         });
                     }
@@ -119,9 +139,5 @@ class App {
             
                 return Promise.reject(err);
             });
-    }
-
-    setupScrollTopButton() {
-        console.log(this.scrollTopButton);
     }
 }

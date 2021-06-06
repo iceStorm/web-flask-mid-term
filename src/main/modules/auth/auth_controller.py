@@ -1,8 +1,9 @@
-import os.path
+import json
 
-from flask import Blueprint, jsonify, request, render_template, flash, current_app, url_for
+from flask import Blueprint, jsonify, request, render_template, flash, current_app, url_for, make_response
 from flask_login import login_required, current_user, logout_user, login_user
-from werkzeug.utils import redirect, secure_filename
+from werkzeug.utils import redirect
+
 
 # defining controller
 auth = Blueprint('auth', __name__, template_folder='templates', static_folder='static', static_url_path='auth/static')
@@ -73,6 +74,14 @@ def signup():
     return redirect(url_for('auth.login', email=form.email.data))
 
 
+@auth.route('/reset-password', methods=['POST'])
+def reset_password():
+    from src.main.modules.auth.auth_service import AuthService
+
+    AuthService.send_reset_password_email(request.email)
+    return "password reset", 200
+
+
 @auth.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
@@ -127,9 +136,21 @@ def profile():
     return redirect(location='profile')
 
 
-@auth.route('/reset-password', methods=['POST'])
-def reset_password():
-    from src.main.modules.auth.auth_service import AuthService
+@auth.route('/check-email', methods=['POST'])
+def check_email_exists():
+    email = request.form.get('email', None)
 
-    AuthService.send_reset_password_email(request.email)
-    return "password reset", 200
+    if email:
+        from src.main.modules.auth.auth_service import AuthService
+
+        if AuthService.is_user_already_exists(email):
+            return {'exists': True}, 200
+        else:
+            response = jsonify({'message': 'The email is not registered.'})
+            response.status_code = 404
+            return response
+
+    else:
+        print('the email field is not exists')
+        return {'error': 'form data missing.'}, 400
+

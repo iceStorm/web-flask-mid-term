@@ -20,7 +20,9 @@ def IsEmailExists(form, field):
 class LoginForm(FlaskForm):
     email = EmailField(
         label='Email',
-        render_kw={'autocomplete': 'email'},
+        render_kw={
+            'autocomplete': 'email',
+        },
         validators=[
             InputRequired(),
             EmailValidator,

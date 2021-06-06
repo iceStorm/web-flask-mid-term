@@ -13,6 +13,7 @@
 
         {% for field in form if field.name != 'csrf_token' %}
         <div class="form-field py-2">
+
             <!-- .form-field-label -->
             <div class="form-field-label pb-0.5 text-gray-700">{{ field.label(class="text-sm font-medium") }}</div>
 
@@ -39,7 +40,6 @@
                 }}
             </div>
 
-
             <!-- .form-field-errors-container -->
             <div class="form-field-errors-container">
                 {% if field.errors %}
@@ -52,6 +52,7 @@
                     {% endfor %}
                 {% endif %}
             </div>
+            
         </div> <!-- form-field -->
         {% endfor %}
 

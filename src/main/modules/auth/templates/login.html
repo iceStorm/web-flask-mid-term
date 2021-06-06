@@ -5,7 +5,7 @@
     {{ center_main() }}
 
     <form action="" method="post"
-        x-data="loginForm()"
+        x-data="loginForm()" x-init="init()"
         id="login-form"
         class="py-5 px-9 rounded-md ajax"
         style="min-width: 350px; box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;">
@@ -30,7 +30,7 @@
                     </div>
                     {{
                         field(
-                            class_="
+                            class="
                             bg-transparent rounded-md
                             transition duration-300
                             w-full py-1 px-2 pl-8
@@ -38,9 +38,15 @@
                             hover:bg-gray-100
                             focus:outline-none
                             focus:border-blue-400
-                            focus:bg-white"
+                            focus:bg-white",
                         )
                     }}
+                  
+                    {% if field.name == 'email'  %}
+                      <script>
+                        document.getElementById('email').setAttribute('x-model.debounce.1250', '_email');
+                      </script>
+                    {% endif %}
                 </div>
 
                 <!-- .form-field-errors-container -->
@@ -55,6 +61,7 @@
                         {% endfor %}
                     {% endif %}
                 </div>
+
             </div> <!-- .form-field -->
         {% endfor %}
 
@@ -94,7 +101,39 @@
         </button>
     </form>
 
-    <!--  alpinejs data  -->
+
+    <script>
+      function loginForm() {
+        return {
+          _email: '',
+
+          init() {
+            this.$watch('_email', (value) => {
+              this.checkEmailExist(value);
+            });
+          },
+          checkEmailExist(value) {
+            console.log(document.getElementById('email').validity);
+
+            if (!document.getElementById('email').validity.typeMismatch) {
+              checkEmailFormData = new FormData();
+              checkEmailFormData.append('email', value);
+  
+              axios.post('/check-email', checkEmailFormData)
+                .then(res => {
+                  console.log(res);
+                  document.getElementById('email').setCustomValidity('');
+                })
+                .catch(err => {
+                  console.log(err);
+                  document.getElementById('email').setCustomValidity('The email is not registered');
+                });
+            }
+          }
+        };
+      }
+    </script>
+
     <script>
       $('#login-form .form-field .form-field-container[data-name*="email"] .form-field-prefix').html(`
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -132,6 +171,7 @@
           });
       });
     </script>
+
 
     <style>
         :root {
