@@ -5,8 +5,8 @@
 node_modules
 
 # virtual environment
-#.venv/
-#venv/
+.venv/
+venv/
 
 # private folder
 #src/instance/
