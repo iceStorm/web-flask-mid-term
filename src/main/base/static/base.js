@@ -33,7 +33,9 @@ function setATagNavigate() {
     $('a:not(.not-ajax)').each(function(index, elem) {
         $(this).unbind('click').click((e) => {
             e.preventDefault();
-            navigateTo($(this).attr('href'));
+
+            const href = $(this).attr('href');
+            navigateTo(href);
         });
     });
 }
@@ -104,7 +106,23 @@ function setSubmit() {
         $(this).submit((e) => {
             e.preventDefault();
 
-            axios.post(e.target.action, new FormData(e.target))
+
+            // getting query params
+            let query_params = {};
+            $(e.target).find('input').each(function() {
+                if (this.type != 'submit')
+                query_params[this.name] = this.value;
+            });
+
+            console.log(query_params);
+
+
+            axios.request({
+                method: e.target.method,
+                url: e.target.action,
+                data: e.target.method == 'post' ? new FormData(e.target) : null,
+                params: query_params,
+            })
                 .then(res => {
                     replaceContent(res);
                 })

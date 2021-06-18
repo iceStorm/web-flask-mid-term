@@ -57,8 +57,10 @@ def create_app():
             migrate.init_app(app, db)
 
     # importing all model (tables) is needed for flask-migrate to detect changes
-    from main.modules.user import user_model
-    from main.modules.project import project_model
+    # import main.modules.user.user_model # no need to import the User model, which causing circular importing to relationship
+    # import main.modules.project.project_model
+    # import main.modules.task.task_model
+    import main.modules.priority.priority_model
 
     print('\n\n[NEW APP RETURNED...]')
     return app

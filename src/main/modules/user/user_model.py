@@ -1,3 +1,4 @@
+from sqlalchemy.orm import relationship
 from src.app import db
 from flask_login import UserMixin
 from sqlalchemy import Sequence
@@ -10,9 +11,10 @@ class User(UserMixin, db.Model):
     __table_args__ = {'extend_existing': True}
 
     email = db.Column(db.String(100), primary_key=True, index=True)
-    full_name = db.Column(db.String(100), index=True, nullable=False)
+    full_name = db.Column(db.String(100), index=True, nullable=False) 
     password_hash = db.Column(db.String(255), nullable=False)
     avatar_url = db.Column(db.String(255))
+
 
     def __init__(self, email=None, full_name=None, raw_password=None, avatar_url=None):
         """

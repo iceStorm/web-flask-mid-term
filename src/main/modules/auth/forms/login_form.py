@@ -69,4 +69,3 @@ class LoginForm(FlaskForm):
             return False
 
         return True
-

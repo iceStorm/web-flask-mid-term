@@ -56,43 +56,6 @@
 </div>
 
 
-<style>
-    .nav-user-area-dropdown::after,
-    .nav-user-area-dropdown::before {
-        content: "";
-
-        position: absolute;
-        top: -7px;
-        right: 15px;
-
-        border-bottom: 7px solid #fff;
-        border-left: 7px solid transparent;
-        border-right: 7px solid transparent;
-    }
-    .nav-user-area-dropdown::after {
-        z-index: -1;
-        top: -8.1px;
-        right: 13.9px;
-
-        border-bottom: 8px solid rgba(0, 0, 0, 0.1);
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent;
-    }
-
-    .menu-group {
-        padding: 8px 0;
-    }
-    .menu-group:not(:last-of-type) {
-        border-bottom: 1px solid #eee;
-    }
-
-    .menu-group a:hover {
-        background-color: #eee;
-        color: rgb(56, 56, 56);
-    }
-</style>
-
-
 <script>
     function userDropdown() {
         return {
@@ -157,3 +120,40 @@
         });
     });
 </script>
+
+
+<style>
+    .nav-user-area-dropdown::after,
+    .nav-user-area-dropdown::before {
+        content: "";
+
+        position: absolute;
+        top: -7px;
+        right: 15px;
+
+        border-bottom: 7px solid #fff;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+    }
+    .nav-user-area-dropdown::after {
+        z-index: -1;
+        top: -8.1px;
+        right: 13.9px;
+
+        border-bottom: 8px solid rgba(0, 0, 0, 0.1);
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+    }
+
+    .menu-group {
+        padding: 8px 0;
+    }
+    .menu-group:not(:last-of-type) {
+        border-bottom: 1px solid #eee;
+    }
+
+    .menu-group a:hover {
+        background-color: #eee;
+        color: rgb(56, 56, 56);
+    }
+</style>

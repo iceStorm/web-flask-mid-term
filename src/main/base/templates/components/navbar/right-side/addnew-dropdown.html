@@ -41,22 +41,6 @@
 </div>
 
 
-<style>
-    .nav-user-area-dropdown.addnew::after,
-    .nav-user-area-dropdown.addnew::before {
-        right: unset;
-    }
-
-    .nav-user-area-dropdown.addnew::after {
-        left: 10px;
-    }
-    .nav-user-area-dropdown.addnew::before {
-        left: 11px;
-    }
-
-</style>
-
-
 <!-- alpinejs data -->
 <script>
     function addNewDropdown() {
@@ -66,8 +50,8 @@
             dropdowns: [
                 {
                     title: 'Issue',
-                    href: '#',
-                    icon: "{{ url_for('static', filename='icons/outline/bug-outline.svg') }}",
+                    href: "{{ url_for('task.addNew') }}",
+                    icon: "{{ url_for('static', filename='icons/outline/flag-outline.svg') }}",
                 },
                 {
                     title: 'Project',
@@ -96,3 +80,19 @@
         };
     }
 </script>
+
+
+<style>
+    .nav-user-area-dropdown.addnew::after,
+    .nav-user-area-dropdown.addnew::before {
+        right: unset;
+    }
+
+    .nav-user-area-dropdown.addnew::after {
+        left: 10px;
+    }
+    .nav-user-area-dropdown.addnew::before {
+        left: 11px;
+    }
+
+</style>

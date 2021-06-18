@@ -61,7 +61,7 @@ class App {
             },
             err => {
                 console.log('axios error response:', err.response.status);
-                console.log('error data:', err.response);
+                // console.log('error data:', err.response);
 
 
                 // getting error message from the server

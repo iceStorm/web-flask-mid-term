@@ -41,9 +41,11 @@ class App(Flask):
         """
         from modules.index.index_controller import indx
         from modules.auth.auth_controller import auth
+        from modules.task.task_controller import task
 
         self.register_blueprint(indx, url_prefix="/")
         self.register_blueprint(auth, url_prefix="/")
+        self.register_blueprint(task, url_prefix="/task")
 
     def register_cors(self):
         # adding CORS origins (all) for client ajax calling
@@ -68,12 +70,10 @@ class App(Flask):
         login_manager.login_view = "auth.login"
         login_manager.init_app(self)
 
-
-        # register user_loader
-        from src.main.modules.user.user_model import User
-
         @login_manager.user_loader
         def load_user(email):
+            # register user_loader
+            from src.main.modules.user.user_model import User
             return User.query.get(email)
 
     def load_environment_variables(self):

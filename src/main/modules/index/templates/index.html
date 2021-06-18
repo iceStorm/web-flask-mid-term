@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {{ center_main() }}
+    {# center_main() #}
 
     {% if not current_user.is_authenticated %}
         <div class="flex flex-col justify-between items-center gap-y-9 relative">
@@ -21,8 +21,35 @@
         </div>
     {% else %}
         <div class="flex flex-col justify-between items-center gap-y-9 relative">
-            <p class="text-gray-500 font-extrabold text-3xl" style="">Welcome! {{ current_user.full_name}}</p>
 
+            {# checking current user's tasks #}
+            <!-- <span>Tasks: </span> {# current_user.tasks #} -->
+
+            {% if tasks %}
+                <!-- <h1>{{ current_user.tasks|length }}</h1> -->
+                <table class="table-fixed border border-gray-200">
+                    <thead class="bg-gray-100">
+                        <td class="py-2 px-4">Name</td>
+                        <td class="py-2 px-4">Priority</td>
+                        <td class="py-2 px-4">Description</td>
+                        <td class="py-2 px-4">Actions</td>
+                    </thead>
+                    {% for task in tasks %}
+                        <tr class="{{ task.get_priority_class() }}">
+                            <td class="py-2 px-4">{{ task.name }}</td>
+                            <td class="py-2 px-4">{{ task.priority.name }}</td>
+                            <td class="py-2 px-4">{{ task.description }}</td>
+                            <td class="py-2 px-4">
+                                <a href="{{ url_for('task.edit', task_id=task.task_id) }}">Edit</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <h1>No Tasks.</h1>
+            {% endif %}
+
+            <!-- <p class="text-gray-500 font-extrabold text-3xl" style="">Welcome! {{ current_user.full_name }}</p>
             <a href="/signup" class="
                 shadow-xl text-white font-bold
                 bg-gradient-to-r
@@ -33,7 +60,7 @@
                 focus:ring-offset-2
                 focus:ring-indigo-500">
                 Create your first Project
-            </a>
+            </a> -->
         </div>
     {% endif %}
 

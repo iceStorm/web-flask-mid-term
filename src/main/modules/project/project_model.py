@@ -1,3 +1,5 @@
+from sqlalchemy.orm import relationship
+from sqlalchemy.sql.schema import ForeignKey
 from src.app import db
 from sqlalchemy import Sequence
 
@@ -8,6 +10,9 @@ class Project(db.Model):
 
     name = db.Column(db.String(50), primary_key=True, index=True)
     descriptions = db.Column(db.String(75), index=True)
+    
+    user_id = db.Column(db.String(100), ForeignKey('Users.email'))
+    user = relationship('User', backref='Projects')
 
     def __repr__(self):
         return f"<Project: name: {self.full_name}, descriptions: {self.descriptions}>"
