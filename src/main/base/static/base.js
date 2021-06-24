@@ -39,6 +39,13 @@ function setATagNavigate() {
         });
     });
 }
+function ajaxNavigate(e) {
+    e.preventDefault();
+
+    const href = e.target.href;
+    navigateTo(href);
+}
+
 
 
 /**
@@ -113,8 +120,6 @@ function setSubmit() {
                 if (this.type != 'submit')
                 query_params[this.name] = this.value;
             });
-
-            console.log(query_params);
 
 
             axios.request({

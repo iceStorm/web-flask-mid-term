@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms.fields import StringField, HiddenField
 from wtforms.fields.core import SelectField
-from wtforms.validators import DataRequired, Length
+from wtforms.validators import DataRequired, Length, Optional
 
 
 class AddNewTaskForm(FlaskForm):
@@ -51,6 +51,7 @@ class AddNewTaskForm(FlaskForm):
       },
     },
     validators=[
-      DataRequired(message='Form data error. User_id not provided from the Backend.'),
+      # DataRequired(message='Form data error. User_id not provided from the Backend.'),
+      Optional()
     ],
   )

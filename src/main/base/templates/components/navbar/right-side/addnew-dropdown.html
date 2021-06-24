@@ -29,7 +29,8 @@
                     class="py-2.5 px-4 pl-3 min-w-max pr-14 not-ajax
                     flex justify-start items-center gap-2
                     text-gray-500 text-sm
-                    transition duration-300">
+                    transition duration-300"
+                    onclick="ajaxNavigate(event)">
                     <span class="w-4 h-4" style="filter: invert(0.5);">
                         <img :src="item.icon">
                     </span>
@@ -50,7 +51,7 @@
             dropdowns: [
                 {
                     title: 'Issue',
-                    href: "{{ url_for('task.addNew') }}",
+                    href: "{{ url_for('task.add') }}",
                     icon: "{{ url_for('static', filename='icons/outline/flag-outline.svg') }}",
                 },
                 {
@@ -79,6 +80,8 @@
             }
         };
     }
+
+    //setATagNavigate();
 </script>
 
 
@@ -87,6 +90,7 @@
     .nav-user-area-dropdown.addnew::before {
         right: unset;
     }
+    
 
     .nav-user-area-dropdown.addnew::after {
         left: 10px;

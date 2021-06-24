@@ -1,84 +1,151 @@
+import sys
+
 from flask import Blueprint, render_template, redirect
 from flask.globals import current_app, request
-from flask.helpers import flash
+from flask.helpers import flash, url_for
 from flask_login import login_required, current_user
 
-task = Blueprint('task', __name__, template_folder='templates')
+task = Blueprint('task', __name__, template_folder='templates', static_folder='static', static_url_path='task/static')
 from src.main.modules.task.forms.add_new_form import AddNewTaskForm
-from src.main.modules.task.task_service import TaskService
+from src.main.modules.task.decorators.task_owner import task_owner
 
 
 @task.route('/add-new', methods=['GET', 'POST'])
 @login_required
-def addNew():
-  form = AddNewTaskForm()
+def add():
+    form = AddNewTaskForm()
 
-  # filling the priority choices
-  from src.main.modules.priority.priority_model import Priority
-  form.priority_id.choices = [(p.id, p.name) for p in Priority.query]
+    # filling the priority choices
+    from src.main.modules.priority.priority_model import Priority
+    form.priority_id.choices = [(p.id, p.name) for p in Priority.query]
 
+    if request.method == 'GET':
+        return render_template('add-new.html', form=form)
 
-  if request.method == 'GET':
-    # re-assigning the email (id) to the form
-    form.user_id.data = current_user.email
-    return render_template('add-new.html', form=form)
-  
+    # validate the form
+    if not form.validate_on_submit():
+        flash('Form error!', category='error')
 
-  # validate the form
-  if not form.validate_on_submit():
-    flash('Form error!', category='error')
+        # re-assigning the email (id) to the form
+        return render_template('add-new.html', form=form)
 
-    # re-assigning the email (id) to the form
-    form.user_id.data = current_user.email
-    return render_template('add-new.html', form=form)
+    # all done. let's handle the main process
+    form.user_id.data = current_user.email  # assigning the user's email (as id)
+    from src.main.modules.task.task_service import TaskService
 
-
-  # all done. let's handle the main process
-  from src.main.modules.task.task_service import TaskService
-  import sys
-
-  try:
-    TaskService.addNewTask(form=form)
-    flash('Ok', category='success')
-    return redirect('/')
-  except NameError as err:
-    flash('Error occurred when adding the Task', category='error')
-    print('error', err)
-    return render_template('add-new.html', form=form)
+    try:
+        TaskService.add_new_task(form=form)
+        flash(f"\"{form.name.data}\" added!", category='success')
+        return redirect('/')
+    except NameError as err:
+        flash('Error occurred when adding the Task', category='error')
+        print('error', err)
+        return render_template('add-new.html', form=form)
 
 
 @task.route('/edit/<task_id>', methods=['GET', 'POST'])
-def edit(task_id):
-  # filling the priority choices
-  form = AddNewTaskForm()
-  from src.main.modules.priority.priority_model import Priority
-  form.priority_id.choices = [(p.id, p.name) for p in Priority.query]
+@login_required
+@task_owner
+def edit(the_task):
+    # filling the priority choices
+    form = AddNewTaskForm()
+    from src.main.modules.priority.priority_model import Priority
+    form.priority_id.choices = [(p.id, p.name) for p in Priority.query]
 
 
-  if request.method == 'GET':
+    # on get request -- showing the form view
+    if request.method == 'GET':
+        form.name.data = the_task.name
+        form.description.data = the_task.description
+        form.priority_id.data = the_task.priority_id
+
+        return render_template('add-new.html', isEditing=True, form=form)
+
+
+    # on post request --- updating the data
+    if not form.validate_on_submit():
+        flash('Form error!', category='error')
+        return render_template('add-new.html', isEditing=True, form=form)
+
+    try:
+        from src.main.modules.task.task_service import TaskService
+        TaskService.update_task(the_task.task_id, form)
+        flash('Updated!', category='success')
+        return redirect('/')
+    except:
+        print('\n\n\nerror', sys.exc_info[0])
+        flash('Form error!', category='error')
+        return render_template('add-new.html', isEditing=True, form=form)
+
+
+@task.route('/duplicate/<task_id>', methods=['GET'])
+@login_required
+@task_owner
+def duplicate(the_task):
+    try:
+        from src.main.modules.task.task_service import TaskService
+        TaskService.duplicate_task(the_task)
+
+        flash(f'Duplicated the "{the_task.name}"', category='success')
+        return redirect('/')
+    except:
+        print('\n\n\nerror', sys.exc_info[0])
+        flash('Error occurred when duplicating this task!', category='error')
+        return redirect('/')
+
+
+@task.route('/trash/<task_id>', methods=['GET'])
+@login_required
+@task_owner
+def trash(the_task):
+    try:
+        from src.main.modules.task.task_service import TaskService
+        TaskService.move_to_trash(the_task)
+
+        flash(f'Moved "{the_task.name}" to the Trash!', category='success')
+        return redirect('/')
+    except:
+        print('\n\n\nerror', sys.exc_info[0])
+        flash('Error occurred when moving this task to the Trash!', category='error')
+        return redirect('/')
+
+
+@task.route('/restore/<task_id>', methods=['GET'])
+@login_required
+@task_owner
+def restore(the_task):
+    try:
+        from src.main.modules.task.task_service import TaskService
+        TaskService.restore_from_trash(the_task)
+
+        flash(f'Restored "{the_task.name}"!', category='success')
+        return redirect('/')
+    except:
+        print('\n\n\nerror', sys.exc_info[0])
+        flash('Error occurred when restoring this task!', category='error')
+        return redirect('/')
+
+
+@task.route('/delete/<task_id>', methods=['GET'])
+@login_required
+@task_owner
+def delete(the_task):
+    try:
+        from src.main.modules.task.task_service import TaskService
+        TaskService.remove_task(the_task)
+
+        flash(f'Permanently deleted the "{the_task.name}"', category='success')
+        return redirect(url_for('task.trash_can'))
+    except:
+        print('\n\n\nerror', sys.exc_info[0])
+        flash('Error occurred when deleting this task!', category='error')
+        return redirect('/')
+
+
+@task.route('/trash', methods=['GET'])
+@login_required
+def trash_can():
     from src.main.modules.task.task_model import Task
-    the_task = Task.query.get(task_id)
+    trashed_tasks = Task.query.filter_by(trashed=True).all()
 
-    form.user_id.data = the_task.user_id
-    form.name.data = the_task.name
-    form.description.data = the_task.description
-    form.priority_id.data = the_task.priority_id
-
-    return render_template('add-new.html', isEditing=True, form=form)
-
-
-  # on post request
-  if not form.validate_on_submit():
-    flash('Form error!', category='success')
-    return render_template('add-new.html', isEditing=True, form=form)
-
-  try:
-    TaskService.updateTask(the_task)
-    flash('Updated!', category='success')
-    return redirect('/')
-  except:
-    import sys
-    print('\n\n\nerror', sys.exc_info[0])
-
-    flash('Form error!', category='error')
-    return render_template('add-new.html', isEditing=True, form=form)
+    return render_template('trash-can.html', trashed_tasks=trashed_tasks)

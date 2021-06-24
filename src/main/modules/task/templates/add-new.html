@@ -22,8 +22,8 @@
 
             <img src="{{ url_for('static', filename=field.description.icon.get('origin', '')) }}"
                 style="filter: invert(0.5); user-select: none;"
-                data-original-icon="{# url_for('static', filename=field.description.icon.get('origin', '')) #}"
-                data-alternate-icon="{# url_for('static', filename=field.description.icon.get('alternate', '')) #}">
+                data-original-icon="{{ url_for('static', filename=field.description.icon.get('origin', '')) }}"
+                data-alternate-icon="{{ url_for('static', filename=field.description.icon.get('alternate', '')) }}">
             </div>
             {{
                 field(

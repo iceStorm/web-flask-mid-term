@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% if trashed_tasks %}
+
+        <table class="table-fixed border border-gray-200">
+            <thead class="bg-gray-100 border-b border-gray-200">
+                <td class="py-2 px-4">Name</td>
+                <td class="py-2 px-4">Priority</td>
+                <td class="py-2 px-4">Description</td>
+                <td class="py-2 px-4 text-center" colspan="2">Actions</td>
+            </thead>
+            {% for task in trashed_tasks %}
+                <tr class="border-b border-gray-200">
+                    <td class="py-2 px-4 text-indigo-400 font-semibold">{{ task.name }}</td>
+                    <td class="py-2 px-4">{{ task.description }}</td>
+                    <td class=" py-2 px-4">
+                        <span class="{{ task.get_priority_class() }} px-3 py-1 rounded">{{ task.priority.name }}</span>
+                    </td>
+                    <td class="py-2 px-4 flex gap-2 items-center justify-center">
+                        <a href="{{ url_for('task.delete', task_id=task.task_id) }}"
+                            class="py-1 px-3 rounded bg-red-400 hover:bg-opacity-50 text-white">Permanently Delete</a>
+
+                        <a href="{{ url_for('task.restore', task_id=task.task_id) }}"
+                            class="py-1 px-3 rounded bg-green-400 hover:bg-opacity-50 text-white">Restore</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h1>No Tasks in the Trash.</h1>
+    {% endif %}
+
+{% endblock %}

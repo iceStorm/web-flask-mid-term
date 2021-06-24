@@ -29,7 +29,9 @@ class App(Flask):
         """
         # registering view components
         from .base.components.navbar.navbar_component import navbar_component
+        # from .base.components.tasks_paginator.tasks_paginator_component import TasksPaginatorComponent
         self.context_processor(navbar_component)
+        # self.context_processor(TasksPaginatorComponent)
 
         # registering jinja global functions (allow calling from any jinja templates)
         from .base.helpers.jinja_env_functions import extract_avatar_url
@@ -39,9 +41,9 @@ class App(Flask):
         """
         Registering the app's blueprints.
         """
-        from modules.index.index_controller import indx
-        from modules.auth.auth_controller import auth
-        from modules.task.task_controller import task
+        from .modules.index.index_controller import indx
+        from .modules.auth.auth_controller import auth
+        from .modules.task.task_controller import task
 
         self.register_blueprint(indx, url_prefix="/")
         self.register_blueprint(auth, url_prefix="/")

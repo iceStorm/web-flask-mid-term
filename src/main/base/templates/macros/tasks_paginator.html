@@ -1,0 +1,108 @@
+{% macro tasks_paginator(paginator) %}
+
+    <div class="tasks-filter flex justify-start items-center gap-5 mb-5">
+        <div class="tasks-perpage form-field-container relative" x-data="tasksTable()">
+            <div class="form-field-prefix absolute rounded-l
+              flex justify-center items-center
+              text-gray-400 h-8 w-8"
+            style="top: 1.85px; left: 1.75px; padding: 0.39rem">
+
+            <img src="/static/icons/outline/layers-outline.svg"
+                style="filter: invert(0.5); user-select: none;">
+            </div>
+
+            <select name="" id="sl-tasks-to-show"
+                @change="updateFilter($event.target.value)"
+                class="
+                float-left
+                bg-transparent rounded-md
+                transition duration-300
+                py-1 px-2 pl-8
+                border-2 border-gray-150
+                hover:bg-gray-100
+                focus:outline-none
+                focus:border-blue-400
+                focus:bg-white">
+                <option value="2">2</option>
+                <option value="5" selected>5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+            </select>
+
+            <script>
+                function tasksTable() {
+                    return {
+                        updateFilter(per_page) {
+                            console.log(per_page);
+
+                            navigateTo(`/?per_page=${per_page}`);
+                        }
+                    };
+                }
+            </script>
+        </div>
+
+
+        <div class="tasks-paginator">
+            <ul class="flex">
+                <li> <!-- prev button -->
+                    <a href="
+                        {% if paginator.has_prev %}
+                            url_for('index.index', page_index=paginator.prev_num)
+                        {% endif %}"
+
+                        class="
+                        bg-gray-100 hover:bg-gray-200
+                        text-gray-500 hover-text-white
+                        rounded-l-md
+                        border-t-2 border-l-2 border-b-2 border-gray-300
+                        block h-full flex justify-center items-center p-2"
+
+                        style="min-height: 20px;">
+
+                        <img src="{{ url_for('static', filename='icons/outline/chevron-back-outline.svg') }}"
+                            class="w-4">
+                    </a>
+                </li>
+
+                 <!-- items button -->
+                {% if paginator.iter_pages() %}
+                    {% for page in paginator.iter_pages() %}
+                        <li>
+                            <a href="{{ url_for('index.index', page_index=page) }}"
+
+                               class="
+                               bg-white-300 hover:bg-gray-200
+                               text-gray-500 hover-text-white
+                               border-t-2 border-l-2 border-b-2 border-gray-300
+                               block h-full flex justify-center items-center px-3 py-1"
+
+                               style="min-height: 20px;">
+
+                                {{ page }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+
+                <li> <!-- next button -->
+                    <a href="
+                            {% if paginator.has_next %}
+                                url_for('index.index', page_index=paginator.next_num)
+                            {% endif %}"
+                        class="
+                           bg-gray-100 hover:bg-gray-200 hover-text-white
+                           text-gray-500 rounded-r-md
+                           border-t-2 border-l-2 border-b-2 border-r-2 border-gray-300
+                           block h-full flex justify-center items-center px-2 py-1"
+                        style="min-height: 20px;">
+
+                        <img src="{{ url_for('static', filename='icons/outline/chevron-forward-outline.svg') }}"
+                            class="w-4">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+{% endmacro %}
