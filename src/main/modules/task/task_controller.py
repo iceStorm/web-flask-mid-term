@@ -58,7 +58,6 @@ def edit(the_task):
         form.name.data = the_task.name
         form.description.data = the_task.description
         form.priority_id.data = the_task.priority_id
-
         return render_template('add-new.html', isEditing=True, form=form)
 
 
@@ -74,7 +73,7 @@ def edit(the_task):
         return redirect('/')
     except:
         print('\n\n\nerror', sys.exc_info[0])
-        flash('Form error!', category='error')
+        flash('Error when saving changes!', category='error')
         return render_template('add-new.html', isEditing=True, form=form)
 
 
@@ -145,7 +144,16 @@ def delete(the_task):
 @task.route('/trash', methods=['GET'])
 @login_required
 def trash_can():
-    from src.main.modules.task.task_model import Task
-    trashed_tasks = Task.query.filter_by(trashed=True).all()
+    per_page = request.args.get('per_page')
+    page_index = request.args.get('page_index')
+
+    from src.main.modules.task.task_service import TaskService
+    trashed_tasks = TaskService.get_tasks_by(
+        user_id=current_user.email,
+        trashed=True,
+        done=False,
+        per_page=int(per_page or 5),
+        page_index=int(page_index or 1)
+    )
 
     return render_template('trash-can.html', trashed_tasks=trashed_tasks)

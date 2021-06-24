@@ -3,14 +3,14 @@ from src.app import db
 
 class TaskService:
     @staticmethod
-    def get_tasks_by(user_id, trashed=True, done=True, per_page=5, page_index=1):
+    def get_tasks_by(user_id, trashed=False, done=False, per_page=5, page_index=1):
         from src.main.modules.task.task_model import Task
 
         paginator = Task.query\
                 .filter_by(user_id=user_id, trashed=trashed, done=done)\
                 .paginate(page=page_index, max_per_page=per_page)\
 
-        print(paginator)
+        # print(paginator)
         return paginator
 
 
@@ -46,6 +46,7 @@ class TaskService:
 
         db.session.add(task)
         db.session.commit()
+
 
     @staticmethod
     def update_task(task_id, form):

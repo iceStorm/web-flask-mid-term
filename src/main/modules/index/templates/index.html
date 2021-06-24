@@ -20,11 +20,7 @@
         </div>
     {% else %}
         {% if tasks.items %}
-
-            {# using the |safe filter to ensure the content returned from the function is safe, no need escaping #}
-            {% from "macros/tasks_paginator.html" import tasks_paginator %}
-            {{ tasks_paginator(paginator=tasks) }}
-
+            {{ tasks_paginator(paginator=tasks, endpoint='index.index') }}
 
             <table class="table-fixed border border-gray-200">
                 <thead class="bg-gray-100 font-semibold border-b-2 border-gray-200">

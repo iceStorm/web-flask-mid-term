@@ -1,4 +1,4 @@
-{% macro tasks_paginator(paginator) %}
+{% macro tasks_paginator(paginator, endpoint) %}
 
     <div class="tasks-filter flex justify-start items-center gap-5 mb-5">
         <div class="tasks-perpage form-field-container relative" x-data="tasksTable()">
@@ -24,18 +24,31 @@
                 focus:border-blue-400
                 focus:bg-white">
                 <option value="2">2</option>
-                <option value="5" selected>5</option>
+                <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="15">15</option>
             </select>
 
             <script>
+                if (document.readyState == 'complete') {
+                    console.log(getUrlVars());
+                }
+                else {
+                    document.addEventListener('DOMContentLoaded', () => {
+                        console.log(getUrlVars());
+                    });
+                }
+
+
                 function tasksTable() {
                     return {
                         updateFilter(per_page) {
                             console.log(per_page);
+                            console.log("{{ url_for(endpoint) }}");
 
-                            navigateTo(`/?per_page=${per_page}`);
+                            const url = "{{ url_for(endpoint) }}" + `?per_page=${per_page}`;
+
+                            navigateTo(url);
                         }
                     };
                 }

@@ -116,10 +116,12 @@ function setSubmit() {
 
             // getting query params
             let query_params = {};
-            $(e.target).find('input').each(function() {
-                if (this.type != 'submit')
-                query_params[this.name] = this.value;
-            });
+            if (e.target.method == 'get') {
+                $(e.target).find('input').each(function() {
+                    if (this.type != 'submit')
+                    query_params[this.name] = this.value;
+                });
+            }
 
 
             axios.request({
@@ -139,3 +141,14 @@ function setSubmit() {
     });
 }
 
+
+/**
+ * Getting Browser URL's query parameters
+ */
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+}

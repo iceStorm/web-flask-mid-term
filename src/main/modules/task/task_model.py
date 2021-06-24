@@ -29,7 +29,7 @@ class Task(db.Model):
 
     def get_priority_class(self):
         """
-        @return: the css classed corresponding to the priority level.
+        @return: the css class (background color) corresponding to the priority level.
         """
         if self.priority.name == 'Lowest':
             return 'bg-green-200'

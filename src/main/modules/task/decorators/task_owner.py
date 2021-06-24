@@ -20,9 +20,11 @@ def task_owner(f):
 
             if the_task:
                 if the_task.user_id == current_user.email:
+                    # "the_task" wil be passed as a callback param to the
+                    # actual function that implements this decorator"
                     return f(the_task)
 
-                flash('You don\' own this Task!', category='warning')
+                flash('You don\'t own this Task!', category='warning')
                 return redirect(url_for('index.index'))
 
             flash('The task no longer exists!', category='error')
