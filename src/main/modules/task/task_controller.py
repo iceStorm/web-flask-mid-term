@@ -5,7 +5,7 @@ from flask.globals import current_app, request
 from flask.helpers import flash, url_for
 from flask_login import login_required, current_user
 
-task = Blueprint('task', __name__, template_folder='templates', static_folder='static', static_url_path='task/static')
+task = Blueprint('task', __name__, template_folder='templates')
 from src.main.modules.task.forms.add_new_form import AddNewTaskForm
 from src.main.modules.task.decorators.task_owner import task_owner
 
