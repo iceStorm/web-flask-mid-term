@@ -141,6 +141,39 @@ def delete(the_task):
         return redirect('/')
 
 
+@task.route('/mark_done/<task_id>', methods=['GET'])
+@login_required
+@task_owner
+def mark_done(the_task):
+    try:
+        from src.main.modules.task.task_service import TaskService
+        TaskService.mark_as_done(the_task)
+
+        flash(f'Marked done for "{the_task.name}"', category='success')
+        return redirect(url_for('index.index'))
+    except:
+        print('\n\n\nerror', sys.exc_info[0])
+        flash('Error occurred when marking done this task!', category='error')
+        return redirect('/')
+
+
+@task.route('/mark_undone/<task_id>', methods=['GET'])
+@login_required
+@task_owner
+def mark_undone(the_task):
+    try:
+        from src.main.modules.task.task_service import TaskService
+        TaskService.mark_as_undone(the_task)
+
+        flash(f'Reverted "{the_task.name}"', category='success')
+        return redirect(url_for('index.index'))
+    except:
+        print('\n\n\nerror', sys.exc_info[0])
+        flash('Error occurred when marking done this task!', category='error')
+        return redirect('/')
+
+
+
 @task.route('/trash', methods=['GET'])
 @login_required
 def trash_can():

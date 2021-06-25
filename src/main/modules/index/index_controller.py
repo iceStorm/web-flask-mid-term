@@ -21,7 +21,7 @@ def index():
         tasks = TaskService.get_tasks_by(
             user_id=current_user.email,
             trashed=False,
-            done=done or False,
+            done=done,
             per_page=int(per_page or 5),
             page_index=int(page_index or 1)
         )

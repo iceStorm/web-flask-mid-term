@@ -3,10 +3,17 @@ from src.app import db
 
 class TaskService:
     @staticmethod
-    def get_tasks_by(user_id, trashed, done, per_page=5, page_index=1):
+    def get_tasks_by(user_id, trashed, done=-1, per_page=5, page_index=1):
         from src.main.modules.task.task_model import Task
+        paginator = None
 
-        paginator = Task.query\
+        if not done or done == -1:
+            paginator = Task.query \
+                .filter_by(user_id=user_id, trashed=trashed) \
+                .paginate(page=page_index, max_per_page=per_page) \
+
+        else:
+            paginator = Task.query\
                 .filter_by(user_id=user_id, trashed=trashed, done=done)\
                 .paginate(page=page_index, max_per_page=per_page)\
 
@@ -77,6 +84,26 @@ class TaskService:
         @param the_task: the task to be restoring.
         """
         the_task.trashed = False
+        db.session.commit()
+
+
+    @staticmethod
+    def mark_as_done(the_task):
+        """
+        Restoring the task from the Trash.
+        @param the_task: the task to be restoring.
+        """
+        the_task.done = True
+        db.session.commit()
+
+
+    @staticmethod
+    def mark_as_undone(the_task):
+        """
+        Restoring the task from the Trash.
+        @param the_task: the task to be restoring.
+        """
+        the_task.done = False
         db.session.commit()
 
 

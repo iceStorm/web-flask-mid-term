@@ -1,7 +1,8 @@
 {% macro tasks_paginator(paginator, endpoint) %}
 
     <div class="tasks-filter flex justify-start items-center gap-5 mb-5">
-        <div class="tasks-perpage form-field-container relative" x-data="tasksTable()">
+
+        <div class="tasks-perpage form-field-container relative" x-data="tasksPerPage()">
             <div class="form-field-prefix absolute rounded-l
               flex justify-center items-center
               text-gray-400 h-8 w-8"
@@ -46,7 +47,7 @@
                     $('#sl-tasks-to-show').val(amount);
                 }
 
-                function tasksTable() {
+                function tasksPerPage() {
                     return {
                         updateFilter(per_page) {
                             const url = "{{ url_for(endpoint) }}" + `?per_page=${per_page}`;
@@ -57,6 +58,61 @@
             </script>
         </div>
 
+
+        <div class="tasks-status-type form-field-container relative" x-data="tasksStatusType()">
+            <div class="form-field-prefix absolute rounded-l
+              flex justify-center items-center
+              text-gray-400 h-8 w-8"
+            style="top: 1.85px; left: 1.75px; padding: 0.39rem">
+
+            <img src="/static/icons/outline/checkmark-done-outline.svg"
+                style="filter: invert(0.5); user-select: none;">
+            </div>
+
+            <select name="" id="sl-tasks-status-type"
+                @change="updateFilter($event.target.value)"
+                class="
+                float-left
+                bg-transparent rounded-md
+                transition duration-300
+                py-1 px-2 pl-8
+                border-2 border-gray-150
+                hover:bg-gray-100
+                focus:outline-none
+                focus:border-blue-400
+                focus:bg-white">
+                <option value="-1">All</option>
+                <option value="0">Undone</option>
+                <option value="1">Done</option>
+            </select>
+
+            <script>
+                per_page = {{ paginator['per_page'] }};
+
+                if (document.readyState == 'complete') {
+                    updateSelectedAmount(per_page);
+                }
+                else {
+                    document.addEventListener('DOMContentLoaded', () => {
+                        updateSelectedAmount(per_page);
+                    });
+                }
+
+
+                function updateSelectedAmount(amount) {
+                    $('#sl-tasks-to-show').val(amount);
+                }
+
+                function tasksStatusType() {
+                    return {
+                        updateFilter(per_page) {
+                            const url = "{{ url_for(endpoint) }}" + `?per_page=${per_page}`;
+                            navigateTo(url);
+                        }
+                    };
+                }
+            </script>
+        </div>
 
         <div class="tasks-paginator">
             <ul class="flex">
