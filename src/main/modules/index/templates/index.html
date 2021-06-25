@@ -27,24 +27,38 @@
                     <td class="py-2 px-4">Name</td>
                     <td class="py-2 px-4">Description</td>
                     <td class="py-2 px-4">Priority</td>
-                    <td class="py-2 px-4 text-center" colspan="2">Actions</td>
+                    <td class="py-2 px-4 text-center">Status</td>
+                    <td class="py-2 px-4 text-center">Actions</td>
                 </thead>
                 {% for task in tasks.items if not task.trashed %}
-                    <tr class="border-b border-gray-200 hover:bg-purple-100">
+                    <tr class="border-b border-gray-200 hover:bg-gray-50">
                         <td class="py-2 px-4 text-indigo-400 font-semibold">{{ task.name }}</td>
                         <td class="py-2 px-4">{{ task.description }}</td>
                         <td class=" py-2 px-4">
-                            <span class="{{ task.get_priority_class() }} px-3 py-1 rounded">{{ task.priority.name }}</span>
+                            <p class="{{ task.get_priority_class() }} px-3 py-1 rounded">{{ task.priority.name }}</p>
                         </td>
+                        <td class="text-center">{{ task.done }}</td>
                         <td class="py-2 px-4 flex gap-2 items-center justify-center">
                             <a href="{{ url_for('task.trash', task_id=task.task_id) }}"
-                                class="py-1 px-3 rounded bg-red-400 hover:bg-opacity-50 text-white">Trash</a>
+                                class="py-1 px-3 rounded bg-red-400 hover:bg-opacity-50 text-white flex justify-center items-center gap-2">
+                                <img src="{{ url_for('static', filename='icons/outline/trash-outline.svg') }}"
+                                    class="w-4 filter invert">
+                                <span>Trash</span>
+                            </a>
 
                             <a href="{{ url_for('task.duplicate', task_id=task.task_id) }}"
-                                class="py-1 px-3 rounded bg-blue-400 hover:bg-opacity-50 text-white">Duplicate</a>
+                                class="py-1 px-3 rounded bg-blue-400 hover:bg-opacity-50 text-white flex justify-center items-center gap-2">
+                                <img src="{{ url_for('static', filename='icons/outline/copy-outline.svg') }}"
+                                    class="w-4 filter invert">
+                                <span>Duplicate</span>
+                            </a>
 
                             <a href="{{ url_for('task.edit', task_id=task.task_id) }}"
-                                class="py-1 px-3 rounded bg-yellow-400 hover:bg-opacity-50 text-white">Modify</a>
+                                class="py-1 px-3 rounded bg-yellow-400 hover:bg-opacity-50 text-white flex justify-center items-center gap-2">
+                                <img src="{{ url_for('static', filename='icons/outline/create-outline.svg') }}"
+                                    class="w-4 filter invert">
+                                <span>Modify</span>
+                            </a>
                         </td>
                     </tr>
                 {% endfor %}

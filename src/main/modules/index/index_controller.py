@@ -15,12 +15,13 @@ def index():
     if current_user.is_authenticated:
         per_page = request.args.get('per_page')
         page_index = request.args.get('page_index')
+        done = request.args.get('done')
 
         from src.main.modules.task.task_service import TaskService
         tasks = TaskService.get_tasks_by(
             user_id=current_user.email,
             trashed=False,
-            done=False,
+            done=done or False,
             per_page=int(per_page or 5),
             page_index=int(page_index or 1)
         )
