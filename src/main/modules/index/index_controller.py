@@ -22,7 +22,7 @@ def index():
             user_id=current_user.email,
             trashed=False,
             done=done,
-            per_page=int(per_page or 5),
+            per_page=int(per_page or 20),
             page_index=int(page_index or 1)
         )
 

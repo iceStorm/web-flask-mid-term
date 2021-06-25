@@ -3,7 +3,7 @@ from src.app import db
 
 class TaskService:
     @staticmethod
-    def get_tasks_by(user_id, trashed, done=-1, per_page=5, page_index=1):
+    def get_tasks_by(user_id, trashed, done=-1, per_page=20, page_index=1):
         from src.main.modules.task.task_model import Task
         paginator = None
 
