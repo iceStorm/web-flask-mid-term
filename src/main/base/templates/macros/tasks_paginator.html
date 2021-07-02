@@ -108,14 +108,14 @@
                 }
 
                 function updateDoneStatus(doneStatus) {
-                    console.log(doneStatus);
+                    //console.log(doneStatus);
                     document.getElementById('sl-tasks-status-type').value = doneStatus || -1;
                 }
 
                 function tasksStatusType() {
                     return {
                         updateFilter(per_page) {
-                            const url = "{{ url_for(endpoint) }}" + `?done=${per_page}`;
+                            const url = per_page == -1 ? "{{ url_for(endpoint) }}" : "{{ url_for(endpoint) }}" + `?done=${per_page}`;
                             navigateTo(url);
                         }
                     };
