@@ -88,32 +88,41 @@
             </select>
 
             <script>
-                per_page = {{ paginator['per_page'] }};
-
                 if (document.readyState == 'complete') {
-                    updateSelectedAmount(per_page);
+                    setTimeout(() => {
+                        const url = new URL(location.href);
+                        const done = url.searchParams.get('done');
+
+                        updateDoneStatus(done);
+                    }, 0);
                 }
                 else {
                     document.addEventListener('DOMContentLoaded', () => {
-                        updateSelectedAmount(per_page);
+                        setTimeout(() => {
+                            const url = new URL(location.href);
+                            const done = url.searchParams.get('done');
+
+                            updateDoneStatus(done);
+                        }, 0);
                     });
                 }
 
-
-                function updateSelectedAmount(amount) {
-                    $('#sl-tasks-to-show').val(amount);
+                function updateDoneStatus(doneStatus) {
+                    console.log(doneStatus);
+                    document.getElementById('sl-tasks-status-type').value = doneStatus || -1;
                 }
 
                 function tasksStatusType() {
                     return {
                         updateFilter(per_page) {
-                            const url = "{{ url_for(endpoint) }}" + `?per_page=${per_page}`;
+                            const url = "{{ url_for(endpoint) }}" + `?done=${per_page}`;
                             navigateTo(url);
                         }
                     };
                 }
             </script>
         </div>
+
 
         <div class="tasks-paginator">
             <ul class="flex">
