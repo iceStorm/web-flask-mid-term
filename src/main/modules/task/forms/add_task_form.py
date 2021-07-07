@@ -1,10 +1,10 @@
 from flask_wtf import FlaskForm
 from wtforms.fields import StringField, HiddenField, SelectField
-from wtforms.fields.html5 import DateTimeLocalField, DateField
 from wtforms.validators import DataRequired, Length, Optional
 
 from src.main.modules.priority.fields.priority_field import PriorityField
 from src.main.modules.project.fields.deadline_field import DeadlineField
+
 
 class AddTaskForm(FlaskForm):
     # def __init__(self):
