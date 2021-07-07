@@ -1,8 +1,9 @@
-from flask.globals import session
 from sqlalchemy import Sequence
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import ForeignKey
 
+# import src.app as app
+# db = app.db
 from src.app import db
 
 

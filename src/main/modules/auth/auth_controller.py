@@ -35,7 +35,9 @@ def login():
 
     # let's log the user in
     login_user(user, remember=form.remember)
-    return redirect(location='/')
+
+    next_url = request.args.get('next')
+    return redirect(next_url if next_url else '/')
 
 
 @auth.route('/logout', methods=['GET', 'POST'])

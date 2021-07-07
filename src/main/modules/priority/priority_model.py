@@ -1,4 +1,7 @@
 from sqlalchemy import Sequence
+
+# import src.app as app
+# db = app.db
 from src.app import db
 
 

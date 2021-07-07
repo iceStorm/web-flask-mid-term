@@ -1,9 +1,12 @@
 from sqlalchemy.orm import relationship
-from src.app import db
 from flask_login import UserMixin
 from sqlalchemy import Sequence
 
 from werkzeug.security import generate_password_hash, check_password_hash
+
+# import src.app as app
+# db = app.db
+from src.app import db
 
 
 class User(UserMixin, db.Model):
@@ -30,9 +33,11 @@ class User(UserMixin, db.Model):
             print(f'hashing the password {raw_password}:', password_hash)
             self.password_hash = password_hash
 
+
     @staticmethod
     def gen_password_hash(raw_password):
         return generate_password_hash(raw_password)
+
 
     def get_id(self):
         """
@@ -40,8 +45,10 @@ class User(UserMixin, db.Model):
         """
         return self.email
 
+
     def __repr__(self):
         return f"<User: full name: {self.full_name}, email: {self.email}>"
+
 
     def check_password(self, raw_password: str):
         """

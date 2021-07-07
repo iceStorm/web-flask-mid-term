@@ -1,6 +1,5 @@
 from flask import Flask
 
-
 class App(Flask):
     def __init__(self, instance_path):
         super(App, self).__init__(
@@ -18,10 +17,12 @@ class App(Flask):
 
         # registering essential partials for the app
         self.register_base_components()
+        self.register_global_functions()
         self.register_blueprints()
         self.register_cors()
         self.register_error_handlers()
         self.register_login_manager()
+
 
     def register_base_components(self):
         """
@@ -29,13 +30,14 @@ class App(Flask):
         """
         # registering view components
         from .base.components.navbar.navbar_component import navbar_component
-        # from .base.components.tasks_paginator.tasks_paginator_component import TasksPaginatorComponent
         self.context_processor(navbar_component)
-        # self.context_processor(TasksPaginatorComponent)
 
+
+    def register_global_functions(self):
         # registering jinja global functions (allow calling from any jinja templates)
         from .base.helpers.jinja_env_functions import extract_avatar_url
         self.jinja_env.globals.update(extract_avatar_url=extract_avatar_url)
+
 
     def register_blueprints(self):
         """
@@ -49,10 +51,12 @@ class App(Flask):
         self.register_blueprint(auth, url_prefix="/")
         self.register_blueprint(task, url_prefix="/task")
 
+
     def register_cors(self):
         # adding CORS origins (all) for client ajax calling
         from flask_cors import CORS
         cors = CORS(app=self, resources={r"/*": {"origins": "*"}})
+
 
     def register_error_handlers(self):
         """
@@ -63,6 +67,7 @@ class App(Flask):
         self.register_error_handler(403, ErrorHandler.forbidden)
         self.register_error_handler(404, ErrorHandler.not_found)
         self.register_error_handler(500, ErrorHandler.server_error)
+
 
     def register_login_manager(self):
         # adding login manager
@@ -76,7 +81,9 @@ class App(Flask):
         def load_user(email):
             # register user_loader
             from src.main.modules.user.user_model import User
+            # import src.main.modules.user.user_model as user_model
             return User.query.get(email)
+
 
     def load_environment_variables(self):
         """

@@ -1,10 +1,16 @@
 from flask_wtf import FlaskForm
-from wtforms.fields import StringField, HiddenField
-from wtforms.fields.core import SelectField
+from wtforms.fields import StringField, HiddenField, SelectField
+from wtforms.fields.html5 import DateTimeLocalField, DateField
 from wtforms.validators import DataRequired, Length, Optional
 
+from src.main.modules.priority.fields.priority_field import PriorityField
+from src.main.modules.project.fields.deadline_field import DeadlineField
 
-class AddNewTaskForm(FlaskForm):
+class AddTaskForm(FlaskForm):
+    # def __init__(self):
+    #     super(AddNewTaskForm, self).__init__()
+    #     self.priority_id.choices = [(p.id, p.name) for p in Priority.query]
+
     name = StringField(
         label='Enter task name',
         description={
@@ -31,18 +37,10 @@ class AddNewTaskForm(FlaskForm):
         ],
     )
 
-    priority_id = SelectField(
-        label='Priority',
-        coerce=int,
-        description={
-            'icon': {
-                'origin': 'icons/outline/alert-outline.svg',
-            },
-        },
-        validators=[
-            DataRequired(message='Please choose a priority.'),
-        ],
-    )
+
+    # custom field
+    priority_id = PriorityField()
+
 
     user_id = HiddenField(
         label='User id',
@@ -57,3 +55,4 @@ class AddNewTaskForm(FlaskForm):
             Optional()
         ],
     )
+

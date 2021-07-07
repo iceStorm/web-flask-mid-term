@@ -20,10 +20,13 @@
               text-gray-400 h-8 w-8"
             style="top: 1.85px; left: 1.75px; padding: 0.39rem">
 
+            {% if field.description is mapping %}
             <img src="{{ url_for('static', filename=field.description.icon.get('origin', '')) }}"
                 style="filter: invert(0.5); user-select: none;"
                 data-original-icon="{{ url_for('static', filename=field.description.icon.get('origin', '')) }}"
                 data-alternate-icon="{{ url_for('static', filename=field.description.icon.get('alternate', '')) }}">
+            {% endif %}
+
             </div>
             {{
                 field(
