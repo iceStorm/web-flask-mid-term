@@ -2,30 +2,31 @@ from sqlalchemy import Sequence
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import ForeignKey
 
-# import src.app as app
-# db = app.db
-from src.app import db
 
+from src.app import db
 
 class Task(db.Model):
     __tablename__ = "Tasks"
     __table_args__ = {'extend_existing': True}
 
-    task_id = db.Column(db.Integer, Sequence('task_id_seq'), primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
-    description = db.Column(db.String(255), nullable=False)
-    done = db.Column(db.Boolean, nullable=False)
-    trashed = db.Column(db.Boolean, nullable=False)
+    id = db.Column(db.Integer, Sequence('task_id_seq'), primary_key=True)
+    descriptions = db.Column(db.String(255), nullable=False)
+    deadline = db.Column(db.DateTime, nullable=False)
 
-    user_id = db.Column(db.String(100), ForeignKey('Users.email'), nullable=False)
-    user = relationship('User', backref=db.backref('tasks', lazy='joined'))
+    status_id = db.Column(db.Integer, ForeignKey('Statuses.id'), nullable=False)
+    import src.main.modules.status.status_model
+    status = relationship('status_model.Status', backref='tasks')
 
     priority_id = db.Column(db.Integer, ForeignKey('Priorities.id'), nullable=False)
-    priority = relationship('Priority', backref=db.backref('tasks', lazy='joined'))
+    import src.main.modules.priority.priority_model
+    priority = relationship('priority_model.Priority', backref='tasks')
+
+    project_id = db.Column(db.Integer, ForeignKey('Projects.id'), nullable=False)
+    project = relationship('Project', backref='tasks')
 
 
     def __repr__(self) -> str:
-        return f'<Task: user: {self.user_id} | description: {self.description}>'
+        return f'<Task: project: {self.project.name} | description: {self.descriptions}>'
 
 
     def get_priority_class(self):

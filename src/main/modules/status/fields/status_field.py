@@ -11,8 +11,12 @@ class StatusField(SelectField):
         # custom logics here
         self.coerce = int
 
+        # assigning default status
+        self.data = 4
+
         # filling the choices for this SelectField
-        # self.choices = [(s.id, s.name) for s in Status.query]
+        from src.main.modules.status.status_model import Status
+        self.choices = [(s.id, s.name) for s in Status.query]
 
         self.label.text = 'Status'
 

@@ -40,6 +40,11 @@ def navbar_component():
 
         # setting the current active page
         vm.set_active_nav_item(path=req_path)
-        return render_template("components/navbar/index.html", vm=vm)
+
+        # passing the statuses to search box
+        from src.main.modules.status.status_model import Status
+        statuses = Status.query.all()
+
+        return render_template("components/navbar/index.html", vm=vm, statuses=statuses)
 
     return dict(NavbarComponent=component)

@@ -4,27 +4,13 @@ from wtforms.validators import DataRequired, Length, Optional
 
 from src.main.modules.priority.fields.priority_field import PriorityField
 from src.main.modules.project.fields.deadline_field import DeadlineField
+from src.main.modules.project.fields.projects_field import ProjectsField
+from src.main.modules.status.fields.status_field import StatusField
 
 
 class AddTaskForm(FlaskForm):
-    # def __init__(self):
-    #     super(AddNewTaskForm, self).__init__()
-    #     self.priority_id.choices = [(p.id, p.name) for p in Priority.query]
 
-    name = StringField(
-        label='Enter task name',
-        description={
-            'icon': {
-                'origin': 'icons/outline/at-outline.svg',
-            },
-        },
-        validators=[
-            DataRequired(message='Please fill out this field'),
-            Length(max=50, min=5, message='The name must between 5 & 50 characters.'),
-        ],
-    )
-
-    description = StringField(
+    descriptions = StringField(
         label='Enter description',
         description={
             'icon': {
@@ -41,18 +27,25 @@ class AddTaskForm(FlaskForm):
     # custom field
     priority_id = PriorityField()
 
+    # custom field
+    status_id = StatusField()
 
-    user_id = HiddenField(
-        label='User id',
-        description={
-            'icon': {
-                'origin': 'icons/outline/finger-print-outline.svg',
-            },
-        },
-        validators=[
-            # this field's data will be manually set when needed,
-            # regardless (ignoring) any tricks to set wrong data on the client side.
-            Optional()
-        ],
-    )
+    # custom field
+    deadline = DeadlineField()
 
+    # custom field
+    project_id = ProjectsField()
+
+    # custom validating
+    def validate(self):
+        if not FlaskForm.validate(self):
+            return False
+
+        from src.main.modules.project.project_model import Project
+        the_project = Project.query.get(self.project_id.data)
+
+        if self.deadline.data > the_project.deadline:
+            self.deadline.errors.append(f'The deadline cannot greater than its parent project [{the_project.deadline}]')
+            return False
+
+        return True

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from wtforms.fields.html5 import DateTimeLocalField
 from wtforms.validators import DataRequired
 
@@ -9,8 +11,8 @@ class DeadlineField(DateTimeLocalField):
         super(DeadlineField, self).__init__(**kwargs)
 
 
-        # data type
-        self.coerce = int
+        # format
+        self.format = format='%Y-%m-%dT%H:%M'
 
         # html label tag
         self.label.text = 'Deadline'
@@ -26,3 +28,14 @@ class DeadlineField(DateTimeLocalField):
         self.validators=[
             DataRequired(message='Please specify a Deadline date/time'),
         ]
+
+    # run this validation after the normal validations have passed
+    def post_validate(self, form, validation_stopped):
+        if validation_stopped:
+            return False
+
+        if self.data < datetime.now():
+            self.errors.append('The deadline cannot smaller than today!')
+            return False
+
+        return True

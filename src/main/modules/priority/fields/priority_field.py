@@ -13,7 +13,6 @@ class PriorityField(SelectField):
         from src.main.modules.priority.priority_model import Priority
         self.choices = [(p.id, p.name) for p in Priority.query]
 
-
         # data type
         self.coerce = int
 

@@ -24,18 +24,6 @@ def add_sys_paths():
     return WORKING_DIR, ROOT_DIR
 
 
-def ensure_tables():
-    import main.modules.user.user_model as user_model
-
-    # [only need/must] to call the last imported one to invoke the ensure() function
-    user_model.ensure()
-
-
-def show_message(message: str):
-    if __name__ == "__main__":
-        print(message)
-
-
 def create_app():
     # initializing the app
     print("\n[INITIALIZING THE APP...]")
@@ -57,17 +45,19 @@ def create_app():
             migrate.init_app(app, db)
 
     # importing all model (tables) is needed for flask-migrate to detect changes
-    # import main.modules.user.user_model # no need to import the User model, which causing circular importing to relationship
+    # import main.modules.user.user_model # no need to import the User model, which causing circular importing to relationships
     # import main.modules.project.project_model
     # import main.modules.task.task_model
-    import main.modules.priority.priority_model
+    # import main.modules.priority.priority_model
+    # import main.modules.status.status_model
+    # import main.modules.project.project_model
 
     print('\n\n[NEW APP RETURNED...]')
     return app
 
 
 # defining the db instance
-show_message("\n[DEFINING THE DATABASE INSTANCE...]")
+print("\n[DEFINING THE DATABASE INSTANCE...]")
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 

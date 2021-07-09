@@ -19,75 +19,147 @@
             </a>
         </div>
     {% else %}
-        {% if tasks.items %}
-            {{ tasks_paginator(paginator=tasks, endpoint='index.index') }}
 
-            <table class="table-fixed border border-gray-200">
+        {# search by task #}
+        {% if searching_type and searching_type == 'tasks' %}
+            <table class="table-fixed w-full border border-gray-200">
                 <thead class="bg-gray-100 font-semibold border-b-2 border-gray-200">
-                    <td class="py-2 px-4">Name</td>
-                    <td class="py-2 px-4">Description</td>
-                    <td class="py-2 px-4 text-left">Status</td>
-                    <td class="py-2 px-4">Priority</td>
-                    <td class="py-2 px-4 text-center">Actions</td>
-                </thead>
-                {% for task in tasks.items if not task.trashed %}
-                    <tr class="border-b border-gray-200 hover:bg-gray-50">
-                        <td class="py-2 px-4 text-indigo-400 font-semibold">{{ task.name }}</td>
-                        <td class="py-2 px-4">{{ task.description }}</td>
-                        <td class="text-left pl-5" style="max-width: 150px;">
-                            {% if task.done %}
-                                <div class="pretty p-default p-round">
-                                    <input type="checkbox" name="icon" {{ "checked" if task.done else "undone" }}
-                                        onchange="navigateTo('{{ url_for('task.mark_undone', task_id=task.task_id) }}');"/>
-
-                                    <div class="state p-success">
-                                        <i class="icon mdi mdi-check"></i>
-                                        <label>Done</label>
-                                    </div>
-                                </div>
-                            {% else %}
-                                <div class="pretty p-default p-round">
-                                    <input type="checkbox" name="icon" {{ "checked" if task.done else "undone" }}
-                                        onchange="navigateTo('{{ url_for('task.mark_done', task_id=task.task_id) }}');"/>
-
-                                    <div class="state p-primary-o">
-                                        <i class="icon mdi mdi-check"></i>
-                                        <label>Undone</label>
-                                    </div>
-                                </div>
-                            {% endif %}
-                        </td>
-                        <td class=" py-2 px-4">
-                            <p class="{{ task.get_priority_class() }} px-3 py-1 rounded">{{ task.priority.name }}</p>
-                        </td>
-                        <td class="py-2 px-4 flex gap-2 items-center justify-center">
-                            <a href="{{ url_for('task.trash', task_id=task.task_id) }}"
-                                class="py-1 px-3 rounded bg-red-400 hover:bg-opacity-50 text-white flex justify-center items-center gap-2">
-                                <img src="{{ url_for('static', filename='icons/outline/trash-outline.svg') }}"
-                                    class="w-4 filter invert">
-                                <span>Trash</span>
-                            </a>
-
-                            <a href="{{ url_for('task.duplicate', task_id=task.task_id) }}"
-                                class="py-1 px-3 rounded bg-blue-400 hover:bg-opacity-50 text-white flex justify-center items-center gap-2">
-                                <img src="{{ url_for('static', filename='icons/outline/copy-outline.svg') }}"
-                                    class="w-4 filter invert">
-                                <span>Duplicate</span>
-                            </a>
-
-                            <a href="{{ url_for('task.edit', task_id=task.task_id) }}"
-                                class="py-1 px-3 rounded bg-yellow-400 hover:bg-opacity-50 text-white flex justify-center items-center gap-2">
-                                <img src="{{ url_for('static', filename='icons/outline/create-outline.svg') }}"
-                                    class="w-4 filter invert">
-                                <span>Modify</span>
-                            </a>
-                        </td>
+                    <tr>
+                        <td class="py-2 px-4">Tasks</td>
+                        <td class="py-2 px-4">Project</td>
+                        <td class="py-2 px-4">Descriptions</td>
+                        <td class="py-2 px-4 text-left">Status</td>
+                        <td class="py-2 px-4 text-left">Deadline</td>
+                        <td class="py-2 px-4 text-center">Actions</td>
                     </tr>
+                </thead>
+                {% for task in tasks %}
+                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                    <td>
+                        <span class="
+                            {{ task.get_priority_class() }} ml-4 rounded-md px-5 py-1
+                            flex justify-center align-center" style="width: 90px;">
+                            {{ task.priority.name }}
+                        </span>
+                    </td>
+                    <td class="py-2 px-4">{{ task.project.name }}</td>
+                    <td class="py-2 px-4">{{ task.descriptions }}</td>
+                    <td class="text-left pl-5"> {{ task.status.name }}</td>
+                    <td class="text-left pl-5"> {{ task.deadline }}</td>
+                    <td class="py-2 px-4 flex gap-2 items-center justify-center">
+                        <a href="{{ url_for('task.delete', task_id=task.id) }}"
+                            class="py-1 px-3 rounded bg-red-400 hover:bg-opacity-50 text-white flex justify-center items-center gap-2">
+                            <img src="{{ url_for('static', filename='icons/outline/trash-outline.svg') }}"
+                                class="w-4 filter invert">
+                            <span>Trash</span>
+                        </a>
+
+                        <a href="{{ url_for('task.edit', task_id=task.id) }}"
+                            class="py-1 px-3 rounded bg-yellow-400 hover:bg-opacity-50 text-white flex justify-center items-center gap-2">
+                            <img src="{{ url_for('static', filename='icons/outline/create-outline.svg') }}"
+                                class="w-4 filter invert">
+                            <span>Modify</span>
+                        </a>
+                    </td>
+                </tr>
                 {% endfor %}
             </table>
-        {% else %}
-            <h1>No Tasks.</h1>
-        {% endif %}
-    {% endif %}
+
+        {% elif projects %}
+            <div class="projects-container flex flex-col" style="gap: 100px;">
+
+                {% for project in projects %}
+                <div class="project">
+                <table class="table-fixed w-full border border-gray-200">
+                    <thead class="bg-gray-100 font-semibold border-b-2 border-gray-200">
+                        <tr>
+                            <td class="py-2 px-4">Project</td>
+                            <td class="py-2 px-4">Descriptions</td>
+                            <td class="py-2 px-4 text-left">Status</td>
+                            <td class="py-2 px-4 text-left">Deadline</td>
+                            <td class="py-2 px-4 text-center">Actions</td>
+                        </tr>
+                    </thead>
+                        <tr class="border-b border-gray-200 hover:bg-gray-50">
+                            <td class="py-2 px-4 text-indigo-400 font-semibold">{{ project.name }}</td>
+                            <td class="py-2 px-4">{{ project.descriptions }}</td>
+                            <td class="text-left pl-5"> {{ project.status.name }}</td>
+                            <td class="text-left pl-5"> {{ project.deadline }}</td>
+                            <td class="py-2 px-4 flex gap-2 items-center justify-center">
+                                <a href="{{ url_for('project.delete', project_id=project.id) }}"
+                                    class="py-1 px-3 rounded bg-red-400 hover:bg-opacity-50 text-white flex justify-center items-center gap-2">
+                                    <img src="{{ url_for('static', filename='icons/outline/trash-outline.svg') }}"
+                                        class="w-4 filter invert">
+                                    <span>Trash</span>
+                                </a>
+
+                                <a href="{{ url_for('project.edit', project_id=project.id) }}"
+                                    class="py-1 px-3 rounded bg-yellow-400 hover:bg-opacity-50 text-white flex justify-center items-center gap-2">
+                                    <img src="{{ url_for('static', filename='icons/outline/create-outline.svg') }}"
+                                        class="w-4 filter invert">
+                                    <span>Modify</span>
+                                </a>
+                            </td>
+                        </tr>
+                </table>
+
+                    {% if project.tasks %}
+                    <table class="table-fixed w-full border border-gray-200">
+                        <thead class="bg-gray-100 font-semibold border-b-2 border-gray-200">
+                            <tr>
+                                <td class="py-2 px-4">Tasks</td>
+                                <td class="py-2 px-4">Descriptions</td>
+                                <td class="py-2 px-4 text-left">Status</td>
+                                <td class="py-2 px-4 text-left">Deadline</td>
+                                <td class="py-2 px-4 text-center">Actions</td>
+                            </tr>
+                        </thead>
+                            {% for task in project.tasks if not task.trashed %}
+                            <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                <td>
+                                    <span class="
+                                        {{ task.get_priority_class() }} ml-4 rounded-md px-5 py-1
+                                        flex justify-center align-center" style="width: 90px;">
+                                        {{ task.priority.name }}
+                                    </span>
+                                </td>
+                                <td class="py-2 px-4">{{ task.descriptions }}</td>
+                                <td class="text-left pl-5"> {{ task.status.name }}</td>
+                                <td class="text-left pl-5"> {{ task.deadline }}</td>
+                                <td class="py-2 px-4 flex gap-2 items-center justify-center">
+                                    <a href="{{ url_for('task.delete', task_id=task.id) }}"
+                                        class="py-1 px-3 rounded bg-red-400 hover:bg-opacity-50 text-white flex justify-center items-center gap-2">
+                                        <img src="{{ url_for('static', filename='icons/outline/trash-outline.svg') }}"
+                                            class="w-4 filter invert">
+                                        <span>Trash</span>
+                                    </a>
+
+                                    <a href="{{ url_for('task.edit', task_id=task.id) }}"
+                                        class="py-1 px-3 rounded bg-yellow-400 hover:bg-opacity-50 text-white flex justify-center items-center gap-2">
+                                        <img src="{{ url_for('static', filename='icons/outline/create-outline.svg') }}"
+                                            class="w-4 filter invert">
+                                        <span>Modify</span>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                    </table>
+                    {% else %}
+                        <table class="table-fixed w-full border border-gray-200">
+                            <thead class="bg-gray-100 font-semibold border-b-2 border-gray-200">
+                                <tr>
+                                    <td class="py-2 px-4" colspan="5">No Tasks.</td>
+                                </tr>
+                            </thead>
+                        </table>
+                    {% endif %}
+
+                </div>  <!-- .project -->
+                {% endfor %}
+
+            </div> <!-- .projects-container -->
+        {% endif %}  <!-- check logged in user projects -->
+
+    {% endif %} <!-- check user logged in -->
 
 {% endblock %}

@@ -46,10 +46,12 @@ class App(Flask):
         from .modules.index.index_controller import indx
         from .modules.auth.auth_controller import auth
         from .modules.task.task_controller import task
+        from .modules.project.project_controller import project
 
         self.register_blueprint(indx, url_prefix="/")
         self.register_blueprint(auth, url_prefix="/")
         self.register_blueprint(task, url_prefix="/task")
+        self.register_blueprint(project, url_prefix="/project")
 
 
     def register_cors(self):
